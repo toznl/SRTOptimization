@@ -30,28 +30,45 @@ namespace SRTOptimization
         public MainWindow()
         {
             InitializeComponent();
-
-            Vector<double>[] print = new Vector<double>[,];
-                print = test(2, 2);
-
+                 
             System.Diagnostics.Debug.WriteLine("Debug WriteLine");
-            Console.WriteLine(print);
+            SRT_Matrix mat = new SRT_Matrix();
+            mat.Test1(1,1);
+            SRT_Matrix_Kinect mat1 = new SRT_Matrix_Kinect();
+            mat1.Test1(1, 1);
             System.Diagnostics.Trace.WriteLine("Trace WrtieLine");
         }
 
-        public Vector<double>[] test(double t1, double t2)
+
+        class SRT_Matrix
         {
-            Vector<double>[] result;
-            Matrix<double> A = DenseMatrix.OfArray(new double[,] {
+            public Vector<double>[] Test1(int t1, int t2)
+            {
+                Vector<double>[] result;
+                Matrix<double> A = DenseMatrix.OfArray(new double[,] {
                 {1,1,1,1 },
                 {1,2,3,4 },
                 {4,3,2,1 }});
 
-            Vector<double>[] nullspace = A.Kernel();
+                Vector<double>[] nullspace = A.Kernel();
 
-            result = nullspace;
 
-            return result;
+                Console.WriteLine(A.ToString());
+                result = nullspace;
+
+                return result;
+            }
         }
+
+        class SRT_Matrix_Kinect : SRT_Matrix
+        {
+            public void whatthe()
+            {
+                Console.WriteLine(Test1(1,2).ToString());
+            }
+        }
+
+      
+        
     }
 }
