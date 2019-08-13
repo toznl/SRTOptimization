@@ -57,9 +57,23 @@ namespace SRTOptimization
                 result = nullspace;
 
                 return result;
+
+
+            }
+
+            public DenseMatrix Kinect(double head, double neck, double spine_mid, double spine_base, double shoulder_left, double elbow_left, double wrist_left, double inner_left, double outer_left, double shoulder_right, double elbow_right, double wrist_right, double inner_right, double outer_right)
+            {
+                DenseMatrix result;
+                //5x3Matrix of Kinect_Device
+                result = DenseMatrix.OfArray(new double[,]{
+                {head, neck, spine_mid, spine_base,0},
+                {shoulder_left, elbow_left, wrist_left, inner_left, outer_left},
+                {shoulder_right, elbow_right, wrist_right, inner_right, outer_right}
+            });
+
+                return result;
             }
         }
-
         class SRT_Matrix_Kinect : SRT_Matrix
         {
             public void whatthe()
@@ -69,6 +83,8 @@ namespace SRTOptimization
         }
 
       
+    
         
+       
     }
 }
