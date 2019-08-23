@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
+
 using Microsoft.Kinect;
     
 
@@ -21,12 +22,6 @@ namespace SRTOptimization
 {
     class KinectCall
     {
-        private KinectSensor kinectSensor = null;
-        private ColorFrameReader colorFrameReader;
-        private FrameDescription colorFrameDescription;
-        private uint bytesPerPixel = 0;
-        private WriteableBitmap colorBitmap = null;
-        private byte[] colorPixels = null;
         struct Kinect_Value
         {
             public double head_X;
@@ -69,7 +64,7 @@ namespace SRTOptimization
             public double spineBase_Y;
             public double spineBase_Z;
 
-            public Kinect_Value Kinect_Input(Body body)
+            public Kinect_Value(Body body)
             {
                 Kinect_Value result;
 
@@ -122,11 +117,6 @@ namespace SRTOptimization
 
             return kinectSensor01;
         }
-        public SRT_Matrix(Kinect_Value kinect_Value)
-        {
-
-        }
-
-
+    
     }
 }
