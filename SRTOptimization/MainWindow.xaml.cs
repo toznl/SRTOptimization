@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Windows.Threading;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 using Microsoft.Kinect;
 
@@ -28,24 +32,18 @@ namespace SRTOptimization
     
     public partial class MainWindow : Window
     {
-
-        public KinectSensor sensor;
+        KinectSensor sensor;
         DepthFrameReader depthReader;
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
-        DenseMatrix Kinect01_x;
-        DenseMatrix Kinect01_y;
-        DenseMatrix Kinect01_z;
-
-        DenseMatrix Kinect02_x;
-        DenseMatrix Kinect02_y;
-        DenseMatrix Kinect02_z;
-
-
+        Matrix<double> mat_x_01;
+        Matrix<double> mat_y_01;
+        Matrix<double> mat_z_01;
 
         public MainWindow()
         {
+            AllocConsole();
             InitializeComponent();
             this.Loaded += OnLoaded;
             this.Closing += delegate
@@ -56,9 +54,6 @@ namespace SRTOptimization
 
         private ImageSource ProcessFrame(DepthFrame frame)
         {
-           
-            KinectCall kinect_01 = new KinectCall();
-            
             int width = frame.FrameDescription.Width;
             int height = frame.FrameDescription.Height;
             PixelFormat format = PixelFormats.Bgr32;
@@ -112,9 +107,18 @@ namespace SRTOptimization
             this.sensor.Close();
             this.sensor = null;
         }
-        DenseMatrix OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
+
+        #region ConsoleWindows
+        //For using console windows
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        #endregion
+
+        void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
-            SRT_Matrix srtMat = new SRT_Matrix();
+            
             
             var frame = e.FrameReference.AcquireFrame();
 
@@ -130,7 +134,47 @@ namespace SRTOptimization
                     {
                         if (body.IsTracked)
                         {
-                            Kinect01_x(body);
+                            try
+                            {
+                                Kinect_Device.Kinect_Mat_X _Mat_X_01 = new Kinect_Device.Kinect_Mat_X();
+                                Kinect_Device.Kinect_Mat_Y _Mat_Y_01 = new Kinect_Device.Kinect_Mat_Y();
+                                Kinect_Device.Kinect_Mat_Z _Mat_Z_01 = new Kinect_Device.Kinect_Mat_Z();
+
+                                _Mat_X_01.Get_Bodies(body, sensor);
+                                //_Mat_Y_01.Get_Bodies(body, sensor);
+                                //_Mat_Z_01.Get_Bodies(body, sensor);
+
+                                mat_x_01 = _Mat_X_01.body_X;
+                                //mat_y_01 = _Mat_Y_01.body_y;
+                                //mat_z_01 = _Mat_Z_01.body_z;
+
+                                double x = mat_x_01[0, 1];
+
+                                Console.WriteLine(mat_x_01);
+                            }
+
+                            catch(NullReferenceException ex)
+                            {
+                                Console.WriteLine(ex.ToString());
+                            }
+                            
+
+                            //Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            //{
+                            //    System.Windows.Shapes.Ellipse drawHead = new System.Windows.Shapes.Ellipse
+                            //    {
+                            //        Fill = Brushes.Red,
+                            //        Width = 20,
+                            //        Height = 20
+                            //    };
+
+                            //Canvas.SetLeft(drawHead, mat_x_01[0, 0] * 300 - drawHead.Width / 2);
+                            //Canvas.SetTop(drawHead, mat_y_01[0, 0] * 300 - drawHead.Width / 2);
+                            //    canvas.Children.Add(drawHead);
+
+                            //}));
+
+
                         }
                     }
                 }

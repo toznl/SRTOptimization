@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SRTOptimization"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="root">
-        <Image Name="depthCamera" Width="400" Height="500"/>
-        <Canvas Name="canvas" Width="400" Height="500"/>
+        Title="MainWindow" Height="686" Width="998">
+    <Grid x:Name="root" Margin="15,10,18.333,0.667">
+        <Image Name="depthCamera" Margin="30,35,488,56"/>
+        <Canvas Name="canvas" Margin="20,25,458.333,45.667"/>
 
     </Grid>
 </Window>
