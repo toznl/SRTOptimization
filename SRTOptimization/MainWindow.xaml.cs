@@ -37,9 +37,11 @@ namespace SRTOptimization
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
-        Matrix<double> mat_x_01;
-        Matrix<double> mat_y_01;
-        Matrix<double> mat_z_01;
+        #region Kinect_Matrix_01
+        Matrix<double> mat_X_01;
+        Matrix<double> mat_Y_01;
+        Matrix<double> mat_Z_01;
+        #endregion
 
         public MainWindow()
         {
@@ -141,39 +143,171 @@ namespace SRTOptimization
                                 Kinect_Device.Kinect_Mat_Z _Mat_Z_01 = new Kinect_Device.Kinect_Mat_Z();
 
                                 _Mat_X_01.Get_Bodies(body, sensor);
-                                //_Mat_Y_01.Get_Bodies(body, sensor);
-                                //_Mat_Z_01.Get_Bodies(body, sensor);
+                                _Mat_Y_01.Get_Bodies(body, sensor);
+                                _Mat_Z_01.Get_Bodies(body, sensor);
 
-                                mat_x_01 = _Mat_X_01.body_X;
-                                //mat_y_01 = _Mat_Y_01.body_y;
-                                //mat_z_01 = _Mat_Z_01.body_z;
+                                mat_X_01 = _Mat_X_01.body_X;
+                                mat_Y_01 = _Mat_Y_01.body_Y;
+                                mat_Z_01 = _Mat_Z_01.body_Z;
 
-                                double x = mat_x_01[0, 1];
-
-                                Console.WriteLine(mat_x_01);
+                                Console.WriteLine(mat_X_01);
+                                Console.WriteLine(mat_Y_01);
+                                Console.WriteLine(mat_Z_01);
                             }
 
                             catch(NullReferenceException ex)
                             {
                                 Console.WriteLine(ex.ToString());
                             }
-                            
 
-                            //Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                            //{
-                            //    System.Windows.Shapes.Ellipse drawHead = new System.Windows.Shapes.Ellipse
-                            //    {
-                            //        Fill = Brushes.Red,
-                            //        Width = 20,
-                            //        Height = 20
-                            //    };
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
 
-                            //Canvas.SetLeft(drawHead, mat_x_01[0, 0] * 300 - drawHead.Width / 2);
-                            //Canvas.SetTop(drawHead, mat_y_01[0, 0] * 300 - drawHead.Width / 2);
-                            //    canvas.Children.Add(drawHead);
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawHead = new Ellipse
+                                {
+                                    Fill = Brushes.Red,
+                                    Width = 20,
+                                    Height = 20
+                                };
 
-                            //}));
+                                Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
+                                Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
+                                canvas.Children.Add(drawHead);
 
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawNeck = new Ellipse
+                                {
+                                    Fill = Brushes.Orange,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawNeck, mat_X_01[0, 1]- drawNeck.Width / 2);
+                                Canvas.SetTop(drawNeck, mat_Y_01[0, 1] - drawNeck.Width / 2);
+                                canvas.Children.Add(drawNeck);
+
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawSpineMid = new Ellipse
+                                {
+                                    Fill = Brushes.Orange,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] - drawSpineMid.Width / 2);
+                                Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] - drawSpineMid.Width / 2);
+                                canvas.Children.Add(drawSpineMid);
+
+                            }));
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawSpineBase = new Ellipse
+                                {
+                                    Fill = Brushes.Orange,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] - drawSpineBase.Width / 2);
+                                Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
+                                canvas.Children.Add(drawSpineBase);
+
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawShoulderLeft = new Ellipse
+                                {
+                                    Fill = Brushes.Green,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] - drawShoulderLeft.Width / 2);
+                                Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] - drawShoulderLeft.Width / 2);
+                                canvas.Children.Add(drawShoulderLeft);
+
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawElbowLeft = new Ellipse
+                                {
+                                    Fill = Brushes.Green,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] - drawElbowLeft.Width / 2);
+                                Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] - drawElbowLeft.Width / 2);
+                                canvas.Children.Add(drawElbowLeft);
+
+                            }));
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawWristLeft = new Ellipse
+                                {
+                                    Fill = Brushes.Green,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] - drawWristLeft.Width / 2);
+                                Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] - drawWristLeft.Width / 2);
+                                canvas.Children.Add(drawWristLeft);
+
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawShoulderRight = new Ellipse
+                                {
+                                    Fill = Brushes.Blue,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetRight(drawShoulderRight, mat_X_01[2, 0] - drawShoulderRight.Width / 2);
+                                Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] - drawShoulderRight.Width / 2);
+                                canvas.Children.Add(drawShoulderRight);
+
+                            }));
+
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawElbowRight = new Ellipse
+                                {
+                                    Fill = Brushes.Blue,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetRight(drawElbowRight, mat_X_01[2, 1] - drawElbowRight.Width / 2);
+                                Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] - drawElbowRight.Width / 2);
+                                canvas.Children.Add(drawElbowRight);
+
+                            }));
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                            {
+                                Ellipse drawWristRight = new Ellipse
+                                {
+                                    Fill = Brushes.Blue,
+                                    Width = 20,
+                                    Height = 20
+                                };
+
+                                Canvas.SetRight(drawWristRight, mat_X_01[2, 2] - drawWristRight.Width / 2);
+                                Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
+                                canvas.Children.Add(drawWristRight);
+
+                            }));
 
                         }
                     }

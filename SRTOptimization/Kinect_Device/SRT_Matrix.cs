@@ -32,12 +32,16 @@ namespace SRTOptimization.Kinect_Device
         public Matrix<double> body_Z;
         public Kinect_Point()
         {
-            Console.WriteLine("Kinect_Point");
+           
         }
 
     }
     public class Kinect_Mat_X : Kinect_Point
     {
+        public Kinect_Mat_X()
+        {
+            Console.WriteLine("Kinect_Point");
+        }
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
         {
             var joints = body.Joints;
@@ -52,7 +56,7 @@ namespace SRTOptimization.Kinect_Device
             spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
             spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
 
-            Matrix<double> body_X = DenseMatrix.OfArray(new double[,]
+            body_X = DenseMatrix.OfArray(new double[,]
             {
                 {head.X, neck.X, spine_Mid.X, spine_Base.X},
                 {shoulder_Left.X, elbow_Left.X, wrist_Left.X,1},
@@ -71,18 +75,18 @@ namespace SRTOptimization.Kinect_Device
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
         {
             var joints = body.Joints;
-            this.head = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Head].Position);
-            this.neck = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Neck].Position);
-            this.shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
-            this.elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
-            this.wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
-            this.shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
-            this.elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
-            this.wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
-            this.spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
-            this.spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
+            head = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Head].Position);
+            neck = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Neck].Position);
+            shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
+            elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
+            wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
+            shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
+            elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
+            wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
+            spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
+            spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
 
-            Matrix<double> body_Y = DenseMatrix.OfArray(new double[,]
+            body_Y = DenseMatrix.OfArray(new double[,]
             {
                 {head.Y, neck.Y, spine_Mid.Y, spine_Base.Y},
                 {shoulder_Left.Y, elbow_Left.Y, wrist_Left.Y,1},
@@ -100,18 +104,18 @@ namespace SRTOptimization.Kinect_Device
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
         {
             var joints = body.Joints;
-            this.head = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Head].Position);
-            this.neck = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Neck].Position);
-            this.shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
-            this.elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
-            this.wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
-            this.shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
-            this.elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
-            this.wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
-            this.spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
-            this.spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
+            head = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Head].Position);
+            neck = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.Neck].Position);
+            shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
+            elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
+            wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
+            shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
+            elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
+            wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
+            spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
+            spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
 
-            Matrix<double> body_Z = DenseMatrix.OfArray(new double[,] 
+            body_Z = DenseMatrix.OfArray(new double[,]
             {
                 {body.Joints[JointType.Head].Position.Z, body.Joints[JointType.Neck].Position.Z, body.Joints[JointType.SpineMid].Position.Z, body.Joints[JointType.SpineBase].Position.Z},
                 {body.Joints[JointType.ShoulderLeft].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristLeft].Position.Z, 1},

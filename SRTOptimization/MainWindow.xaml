@@ -6,9 +6,8 @@
         xmlns:local="clr-namespace:SRTOptimization"
         mc:Ignorable="d"
         Title="MainWindow" Height="686" Width="998">
-    <Grid x:Name="root" Margin="15,10,18.333,0.667">
-        <Image Name="depthCamera" Margin="30,35,488,56"/>
-        <Canvas Name="canvas" Margin="20,25,458.333,45.667"/>
-
+    <Grid x:Name="root" Margin="15,10,463.333,0.667">
+        <Image Name="depthCamera" Margin="30,35,43,56"/>
+        <Canvas Name="canvas" Margin="525,50,-452,41"/>
     </Grid>
 </Window>
