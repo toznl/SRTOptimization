@@ -37,7 +37,10 @@ namespace SRTOptimization
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
+        static double focal_Length = 0.00173667;
+
         #region Kinect_Matrix
+
         Matrix<double> mat_X_01;
         Matrix<double> mat_Y_01;
         Matrix<double> mat_Z_01;
@@ -45,6 +48,7 @@ namespace SRTOptimization
         Matrix<double> mat_X_02;
         Matrix<double> mat_Y_02;
         Matrix<double> mat_Z_02;
+
         #endregion
 
         public MainWindow()
@@ -158,9 +162,11 @@ namespace SRTOptimization
                                     _Mat_Y_01.Get_Bodies(body, sensor);
                                     _Mat_Z_01.Get_Bodies(body, sensor);
 
-                                    mat_X_01 = _Mat_X_01.body_X;
-                                    mat_Y_01 = _Mat_Y_01.body_Y;
+                                    
+                                    
                                     mat_Z_01 = _Mat_Z_01.body_Z;
+                                    mat_Y_01 = (212-_Mat_Y_01.body_Y) * focal_Length * mat_Z_01;
+                                    mat_X_01 = (256 - _Mat_X_01.body_X) * focal_Length * mat_Z_01;
 
                                     Console.WriteLine(mat_X_01);
                                     Console.WriteLine(mat_Y_01);
@@ -168,7 +174,6 @@ namespace SRTOptimization
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
-
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
                                     {
                                         Ellipse drawHead = new Ellipse
@@ -178,8 +183,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
-                                        Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
+                                        Canvas.SetLeft(drawHead, mat_X_01[0, 0] * 300 - drawHead.Width / 2);
+                                        Canvas.SetTop(drawHead, mat_Y_01[0, 0] * 300 - drawHead.Width / 2);
                                         canvas.Children.Add(drawHead);
 
                                     }));
@@ -193,8 +198,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawNeck, mat_X_01[0, 1] - drawNeck.Width / 2);
-                                        Canvas.SetTop(drawNeck, mat_Y_01[0, 1] - drawNeck.Width / 2);
+                                        Canvas.SetLeft(drawNeck, mat_X_01[0, 1] * 3000 - drawNeck.Width / 2);
+                                        Canvas.SetTop(drawNeck, mat_Y_01[0, 1] * 300 - drawNeck.Width / 2);
                                         canvas.Children.Add(drawNeck);
 
                                     }));
@@ -208,8 +213,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] - drawSpineMid.Width / 2);
-                                        Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] - drawSpineMid.Width / 2);
+                                        Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] * 300 - drawSpineMid.Width / 2);
+                                        Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] * 300 - drawSpineMid.Width / 2);
                                         canvas.Children.Add(drawSpineMid);
 
                                     }));
@@ -223,8 +228,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] - drawSpineBase.Width / 2);
-                                        Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
+                                        Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] * 300 - drawSpineBase.Width / 2);
+                                        Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] * 300 - drawSpineBase.Width / 2);
                                         canvas.Children.Add(drawSpineBase);
 
                                     }));
@@ -238,8 +243,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] - drawShoulderLeft.Width / 2);
-                                        Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] - drawShoulderLeft.Width / 2);
+                                        Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] * 300 - drawShoulderLeft.Width / 2);
+                                        Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] * 300 - drawShoulderLeft.Width / 2);
                                         canvas.Children.Add(drawShoulderLeft);
 
                                     }));
@@ -253,8 +258,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] - drawElbowLeft.Width / 2);
-                                        Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] - drawElbowLeft.Width / 2);
+                                        Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] * 300 - drawElbowLeft.Width / 2);
+                                        Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] * 300 - drawElbowLeft.Width / 2);
                                         canvas.Children.Add(drawElbowLeft);
 
                                     }));
@@ -268,8 +273,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] - drawWristLeft.Width / 2);
-                                        Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] - drawWristLeft.Width / 2);
+                                        Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] * 300 - drawWristLeft.Width / 2);
+                                        Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] * 300 - drawWristLeft.Width / 2);
                                         canvas.Children.Add(drawWristLeft);
 
                                     }));
@@ -283,8 +288,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawShoulderRight, mat_X_01[2, 0] - drawShoulderRight.Width / 2);
-                                        Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] - drawShoulderRight.Width / 2);
+                                        Canvas.SetRight(drawShoulderRight, mat_X_01[2, 0] * 300 - drawShoulderRight.Width / 2);
+                                        Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] * 300 - drawShoulderRight.Width / 2);
                                         canvas.Children.Add(drawShoulderRight);
 
                                     }));
@@ -298,8 +303,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawElbowRight, mat_X_01[2, 1] - drawElbowRight.Width / 2);
-                                        Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] - drawElbowRight.Width / 2);
+                                        Canvas.SetRight(drawElbowRight, mat_X_01[2, 1] * 300 - drawElbowRight.Width / 2);
+                                        Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] * 300 - drawElbowRight.Width / 2);
                                         canvas.Children.Add(drawElbowRight);
 
                                     }));
@@ -312,8 +317,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawWristRight, mat_X_01[2, 2] - drawWristRight.Width / 2);
-                                        Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
+                                        Canvas.SetRight(drawWristRight, mat_X_01[2, 2] * 300 - drawWristRight.Width / 2);
+                                        Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] * 300 - drawWristRight.Width / 2);
 
                                         Console.WriteLine(drawWristRight.Width);
                                         Console.WriteLine(mat_X_01[2, 2] - drawWristRight.Width / 2);
