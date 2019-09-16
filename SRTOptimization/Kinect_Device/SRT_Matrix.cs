@@ -61,7 +61,7 @@ namespace SRTOptimization.Kinect_Device
                 {head.X, neck.X, spine_Mid.X, spine_Base.X},
                 {shoulder_Left.X, elbow_Left.X, wrist_Left.X,1},
                 {shoulder_Right.X, elbow_Right.X, wrist_Right.X,1},
-                {1,2,3,4}
+                {1,1,1,1}
             });
             
             return body_X;

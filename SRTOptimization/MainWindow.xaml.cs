@@ -37,8 +37,28 @@ namespace SRTOptimization
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
-        static double focal_Length = 0.00173667;
+        public string angle01 = "0";
+        public string angle02 = "0";
+        public string angle03 = "0";
+        public string angle04 = "0";
+        public string angle05 = "0";
+        public string angle06 = "0";
+        public string angle07 = "0";
+        public string angle08 = "0";
+        public string angle09 = "0";
+        public string angle10 = "0";
+        public string angle11 = "0";
+        public string angle12 = "0";
+        public string angle13 = "0";
+        public string angle14 = "0";
+        public string angle15 = "0";
+        public string angle16 = "0";
+        public string angle17 = "0";
 
+        Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
+        Streaming.SendBuffer sendBuf = new Streaming.SendBuffer();
+        
+       
         #region Kinect_Matrix
 
         Matrix<double> mat_X_01;
@@ -162,11 +182,12 @@ namespace SRTOptimization
                                     _Mat_Y_01.Get_Bodies(body, sensor);
                                     _Mat_Z_01.Get_Bodies(body, sensor);
 
-                                    
-                                    
+                                    mat_X_01 = _Mat_X_01.body_X;
+                                    mat_Y_01 = _Mat_Y_01.body_Y;
                                     mat_Z_01 = _Mat_Z_01.body_Z;
-                                    mat_Y_01 = (212-_Mat_Y_01.body_Y) * focal_Length * mat_Z_01;
-                                    mat_X_01 = (256 - _Mat_X_01.body_X) * focal_Length * mat_Z_01;
+
+                                    mat_X_01=con3d.ConvertX(mat_X_01, mat_Z_01);
+                                    mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
 
                                     Console.WriteLine(mat_X_01);
                                     Console.WriteLine(mat_Y_01);
@@ -183,8 +204,8 @@ namespace SRTOptimization
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawHead, mat_X_01[0, 0] * 300 - drawHead.Width / 2);
-                                        Canvas.SetTop(drawHead, mat_Y_01[0, 0] * 300 - drawHead.Width / 2);
+                                        Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
+                                        Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
                                         canvas.Children.Add(drawHead);
 
                                     }));
@@ -193,13 +214,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawNeck = new Ellipse
                                         {
-                                            Fill = Brushes.Orange,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawNeck, mat_X_01[0, 1] * 3000 - drawNeck.Width / 2);
-                                        Canvas.SetTop(drawNeck, mat_Y_01[0, 1] * 300 - drawNeck.Width / 2);
+                                        Canvas.SetLeft(drawNeck, mat_X_01[0, 1] - drawNeck.Width / 2);
+                                        Canvas.SetTop(drawNeck, mat_Y_01[0, 1] - drawNeck.Width / 2);
                                         canvas.Children.Add(drawNeck);
 
                                     }));
@@ -208,13 +229,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawSpineMid = new Ellipse
                                         {
-                                            Fill = Brushes.Orange,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] * 300 - drawSpineMid.Width / 2);
-                                        Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] * 300 - drawSpineMid.Width / 2);
+                                        Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] - drawSpineMid.Width / 2);
+                                        Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] - drawSpineMid.Width / 2);
                                         canvas.Children.Add(drawSpineMid);
 
                                     }));
@@ -223,13 +244,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawSpineBase = new Ellipse
                                         {
-                                            Fill = Brushes.Orange,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] * 300 - drawSpineBase.Width / 2);
-                                        Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] * 300 - drawSpineBase.Width / 2);
+                                        Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] - drawSpineBase.Width / 2);
+                                        Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
                                         canvas.Children.Add(drawSpineBase);
 
                                     }));
@@ -238,13 +259,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawShoulderLeft = new Ellipse
                                         {
-                                            Fill = Brushes.Green,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] * 300 - drawShoulderLeft.Width / 2);
-                                        Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] * 300 - drawShoulderLeft.Width / 2);
+                                        Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] - drawShoulderLeft.Width / 2);
+                                        Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] - drawShoulderLeft.Width / 2);
                                         canvas.Children.Add(drawShoulderLeft);
 
                                     }));
@@ -253,13 +274,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawElbowLeft = new Ellipse
                                         {
-                                            Fill = Brushes.Green,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] * 300 - drawElbowLeft.Width / 2);
-                                        Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] * 300 - drawElbowLeft.Width / 2);
+                                        Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] - drawElbowLeft.Width / 2);
+                                        Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] - drawElbowLeft.Width / 2);
                                         canvas.Children.Add(drawElbowLeft);
 
                                     }));
@@ -268,13 +289,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawWristLeft = new Ellipse
                                         {
-                                            Fill = Brushes.Green,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] * 300 - drawWristLeft.Width / 2);
-                                        Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] * 300 - drawWristLeft.Width / 2);
+                                        Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] - drawWristLeft.Width / 2);
+                                        Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] - drawWristLeft.Width / 2);
                                         canvas.Children.Add(drawWristLeft);
 
                                     }));
@@ -283,13 +304,13 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawShoulderRight = new Ellipse
                                         {
-                                            Fill = Brushes.Blue,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawShoulderRight, mat_X_01[2, 0] * 300 - drawShoulderRight.Width / 2);
-                                        Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] * 300 - drawShoulderRight.Width / 2);
+                                        Canvas.SetLeft(drawShoulderRight, mat_X_01[2, 0] - drawShoulderRight.Width / 2);
+                                        Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] - drawShoulderRight.Width / 2);
                                         canvas.Children.Add(drawShoulderRight);
 
                                     }));
@@ -298,33 +319,36 @@ namespace SRTOptimization
                                     {
                                         Ellipse drawElbowRight = new Ellipse
                                         {
-                                            Fill = Brushes.Blue,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawElbowRight, mat_X_01[2, 1] * 300 - drawElbowRight.Width / 2);
-                                        Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] * 300 - drawElbowRight.Width / 2);
+                                        Canvas.SetLeft(drawElbowRight, mat_X_01[2, 1] - drawElbowRight.Width / 2);
+                                        Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] - drawElbowRight.Width / 2);
                                         canvas.Children.Add(drawElbowRight);
 
                                     }));
+
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
                                     {
                                         Ellipse drawWristRight = new Ellipse
                                         {
-                                            Fill = Brushes.Blue,
+                                            Fill = Brushes.Red,
                                             Width = 20,
                                             Height = 20
                                         };
 
-                                        Canvas.SetRight(drawWristRight, mat_X_01[2, 2] * 300 - drawWristRight.Width / 2);
-                                        Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] * 300 - drawWristRight.Width / 2);
-
-                                        Console.WriteLine(drawWristRight.Width);
-                                        Console.WriteLine(mat_X_01[2, 2] - drawWristRight.Width / 2);
+                                        Canvas.SetLeft(drawWristRight, mat_X_01[2, 2] - drawWristRight.Width / 2);
+                                        Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
                                         canvas.Children.Add(drawWristRight);
 
                                     }));
+
+                                    #endregion
+
+                                    #region SendAngleto EveR
+                                    //sendBuf.SendBuf(angle01+angle02+ angle03 + angle04 + angle05 + angle06 + angle07 + angle08 + angle09 + angle10 + angle11 + angle12 + angle13 + angle14 + angle15 + angle16 + angle17);
                                     #endregion
                                 }
 
