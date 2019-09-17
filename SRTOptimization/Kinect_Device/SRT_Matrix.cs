@@ -21,11 +21,14 @@ namespace SRTOptimization.Kinect_Device
         public DepthSpacePoint shoulder_Left;
         public DepthSpacePoint elbow_Left;
         public DepthSpacePoint wrist_Left;
+        public DepthSpacePoint thumb_Left;
         public DepthSpacePoint shoulder_Right;
         public DepthSpacePoint elbow_Right;
         public DepthSpacePoint wrist_Right;
+        public DepthSpacePoint thumb_Right;
         public DepthSpacePoint spine_Mid;
         public DepthSpacePoint spine_Base;
+        
 
         public Matrix<double> body_X;
         public Matrix<double> body_Y;
@@ -40,7 +43,7 @@ namespace SRTOptimization.Kinect_Device
     {
         public Kinect_Mat_X()
         {
-            Console.WriteLine("Kinect_Point");
+            Console.WriteLine("Kinect_Point");                        
         }
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
         {
@@ -50,17 +53,19 @@ namespace SRTOptimization.Kinect_Device
             shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
             elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
             wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
+            thumb_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbLeft].Position);
             shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
             elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
             wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
+            thumb_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbRight].Position);
             spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
             spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
 
             body_X = DenseMatrix.OfArray(new double[,]
             {
                 {head.X, neck.X, spine_Mid.X, spine_Base.X},
-                {shoulder_Left.X, elbow_Left.X, wrist_Left.X,1},
-                {shoulder_Right.X, elbow_Right.X, wrist_Right.X,1},
+                {shoulder_Left.X, elbow_Left.X, wrist_Left.X,thumb_Left.X},
+                {shoulder_Right.X, elbow_Right.X, wrist_Right.X,thumb_Right.X},
                 {1,1,1,1}
             });
             
@@ -80,17 +85,19 @@ namespace SRTOptimization.Kinect_Device
             shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
             elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
             wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristLeft].Position);
+            thumb_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbLeft].Position);
             shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
             elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
             wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
+            thumb_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbRight].Position);
             spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
             spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
 
             body_Y = DenseMatrix.OfArray(new double[,]
             {
                 {head.Y, neck.Y, spine_Mid.Y, spine_Base.Y},
-                {shoulder_Left.Y, elbow_Left.Y, wrist_Left.Y,1},
-                {shoulder_Right.Y, elbow_Right.Y, wrist_Right.Y,1},
+                {shoulder_Left.Y, elbow_Left.Y, wrist_Left.Y,thumb_Left.Y},
+                {shoulder_Right.Y, elbow_Right.Y, wrist_Right.Y,thumb_Right.Y},
                 {1,1,1,1}
             });
 
@@ -109,17 +116,21 @@ namespace SRTOptimization.Kinect_Device
             shoulder_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderLeft].Position);
             elbow_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowLeft].Position);
             wrist_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[ JointType.WristLeft].Position);
+            thumb_Left = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbLeft].Position);
             shoulder_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ShoulderRight].Position);
             elbow_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ElbowRight].Position);
             wrist_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.WristRight].Position);
+            thumb_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbRight].Position);
             spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
             spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
+            
+            
 
             body_Z = DenseMatrix.OfArray(new double[,]
             {
                 {body.Joints[JointType.Head].Position.Z, body.Joints[JointType.Neck].Position.Z, body.Joints[JointType.SpineMid].Position.Z, body.Joints[JointType.SpineBase].Position.Z},
-                {body.Joints[JointType.ShoulderLeft].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristLeft].Position.Z, 1},
-                {body.Joints[JointType.ShoulderRight].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristRight].Position.Z, 1},
+                {body.Joints[JointType.ShoulderLeft].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristLeft].Position.Z, body.Joints[JointType.ThumbLeft].Position.Z},
+                {body.Joints[JointType.ShoulderRight].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristRight].Position.Z, body.Joints[JointType.ThumbRight].Position.Z},
                 {1,1,1,1}
         });
             return body_Z;

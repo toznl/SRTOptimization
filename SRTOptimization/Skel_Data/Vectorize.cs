@@ -27,6 +27,15 @@ namespace SRTOptimization.Skel_Data
             return result;
         }
 
+        public double AngleTransform_02(Matrix<double> mat_X, Matrix<double> mat_Y, Matrix<double> mat_Z)
+        {
+            double result;
+
+            result = mat_X[0,0];
+
+            return result;
+        }
+
 
     }
 }

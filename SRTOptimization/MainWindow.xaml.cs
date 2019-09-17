@@ -309,6 +309,22 @@ namespace SRTOptimization
 
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
                                     {
+                                        Ellipse drawThumbLeft = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSeaGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawThumbLeft, mat_X_01[1, 2] - drawThumbLeft.Width / 2);
+                                        Canvas.SetTop(drawThumbLeft, mat_Y_01[1, 2] - drawThumbLeft.Width / 2);
+                                        canvas.Children.Add(drawThumbLeft);
+                                        textCanvas.Text += "ThumbLeft : (" + mat_X_01[1 , 3].ToString("F3") + "  ,  " + mat_Y_01[1, 3].ToString("F3") + "  ,  " + mat_Z_01[1, 3].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
                                         Ellipse drawShoulderRight = new Ellipse
                                         {
                                             Fill = Brushes.LimeGreen,
@@ -352,6 +368,22 @@ namespace SRTOptimization
                                         Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
                                         canvas.Children.Add(drawWristRight);
                                         textCanvas.Text += "WristRight : (" + mat_X_01[2, 2].ToString("F3") + "  ,  " + mat_Y_01[2, 2].ToString("F3") + "  ,  " + mat_Z_01[2, 2].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawThumbRight = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSeaGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawThumbRight, mat_X_01[2, 2] - drawThumbRight.Width / 2);
+                                        Canvas.SetTop(drawThumbRight, mat_Y_01[2, 2] - drawThumbRight.Width / 2);
+                                        canvas.Children.Add(drawThumbRight);
+                                        textCanvas.Text += "ThumbRight : (" + mat_X_01[2, 3].ToString("F3") + "  ,  " + mat_Y_01[2, 3].ToString("F3") + "  ,  " + mat_Z_01[2, 3].ToString("F3") + ")\n";
 
                                     }));
 
