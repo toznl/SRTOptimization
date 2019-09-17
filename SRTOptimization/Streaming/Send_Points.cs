@@ -15,7 +15,7 @@ namespace SRTOptimization.Streaming
     public class Send_Points
     {
         static Socket sock;
-        public void Send_Skel(Matrix<double> skel_set)
+        public void Send_Skel(string text)
         {
             {
                 sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -31,7 +31,7 @@ namespace SRTOptimization.Streaming
                 }
 
                 Console.Write("Enter Text: ");
-                string text = Console.ReadLine();
+                text = "Send Test";
                 byte[] data = Encoding.UTF8.GetBytes(text);
 
                 sock.Send(data);

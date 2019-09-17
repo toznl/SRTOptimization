@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 
 using Microsoft.Kinect;
@@ -56,8 +57,8 @@ namespace SRTOptimization
         public string angle17 = "0";
 
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
-        Streaming.SendBuffer sendBuf = new Streaming.SendBuffer();
-        
+        Streaming.SendAngles sendBuf = new Streaming.SendAngles();
+        byte[] buffer;
        
         #region Kinect_Matrix
 
@@ -80,6 +81,11 @@ namespace SRTOptimization
             {
                 Environment.Exit(1);
             };
+
+            Streaming.Recv_Points obj = new Streaming.Recv_Points();
+            Thread recv_Skel = new Thread(obj.Recv_Skel);
+            recv_Skel.Start();
+           
         }
 
         private ImageSource ProcessFrame(DepthFrame frame)

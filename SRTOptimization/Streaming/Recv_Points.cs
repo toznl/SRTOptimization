@@ -12,15 +12,17 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace SRTOptimization.Streaming
 {
-    public class Recv_Points
-    {
+    public class Recv_Points { 
         static byte[] Buffer { get; set; }
         static Socket sock;
 
-        public void Recv_Skel(byte[] buf)
+        public Recv_Points()
         {
-            Matrix<double> receivedData;
 
+        }
+
+        public void Recv_Skel()
+        {
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sock.Bind(new IPEndPoint(IPAddress.Any, 7000));
             sock.Listen(100);
@@ -37,12 +39,10 @@ namespace SRTOptimization.Streaming
 
             string strdata = Encoding.UTF8.GetString(formatted);
             Console.Write(strdata + "\r\n");
-            Console.Read();
 
             accepted.Close();
             sock.Close();
         }
-        
 
     }
 }

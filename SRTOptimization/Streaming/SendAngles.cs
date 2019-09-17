@@ -8,9 +8,9 @@ using System.Net.Sockets;
 
 namespace SRTOptimization.Streaming
 {
-    public class SendBuffer
+    public class SendAngles
     {
-        public SendBuffer()
+        public SendAngles()
         {
 
         }
