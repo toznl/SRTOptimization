@@ -23,25 +23,30 @@ namespace SRTOptimization.Streaming
 
         public void Recv_Skel()
         {
+
+        }
+
+        public void Recv_Skel(byte[] getSkel)
+        {
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Console.WriteLine("waiting...");
             sock.Bind(new IPEndPoint(IPAddress.Any, 7000));
-            sock.Listen(100);
 
-            Socket accepted = sock.Accept();
-
-            Buffer = new byte[accepted.SendBufferSize];
-            int bytesRead = accepted.Receive(Buffer);
-            byte[] formatted = new byte[bytesRead];
-            for (int i = 0; i < bytesRead; ++i)
+            while (true)
             {
-                formatted[i] = Buffer[i];
+            
+                sock.Listen(1);
+                Socket accepted = sock.Accept();
+                Console.WriteLine("Socket Accepted");
+
+                Buffer = new byte[accepted.SendBufferSize];
+                int bytesRead = accepted.Receive(Buffer);
+                getSkel = new byte[bytesRead];
+
+                Console.WriteLine("Read byte");
+                sock.Close();
             }
-
-            string strdata = Encoding.UTF8.GetString(formatted);
-            Console.Write(strdata + "\r\n");
-
-            accepted.Close();
-            sock.Close();
+            
         }
 
     }

@@ -76,6 +76,7 @@
     <Compile Include="Streaming\Recv_Points.cs" />
     <Compile Include="Streaming\SendAngles.cs" />
     <Compile Include="Streaming\Send_Points.cs" />
+    <Compile Include="Streaming\SerialFunc.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -43,7 +43,7 @@ namespace SRTOptimization.Kinect_Device
     {
         public Kinect_Mat_X()
         {
-            Console.WriteLine("Kinect_Point");                        
+            //Console.WriteLine("Kinect_Point");                        
         }
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
         {
@@ -66,7 +66,6 @@ namespace SRTOptimization.Kinect_Device
                 {head.X, neck.X, spine_Mid.X, spine_Base.X},
                 {shoulder_Left.X, elbow_Left.X, wrist_Left.X,thumb_Left.X},
                 {shoulder_Right.X, elbow_Right.X, wrist_Right.X,thumb_Right.X},
-                {1,1,1,1}
             });
             
             return body_X;
@@ -98,7 +97,6 @@ namespace SRTOptimization.Kinect_Device
                 {head.Y, neck.Y, spine_Mid.Y, spine_Base.Y},
                 {shoulder_Left.Y, elbow_Left.Y, wrist_Left.Y,thumb_Left.Y},
                 {shoulder_Right.Y, elbow_Right.Y, wrist_Right.Y,thumb_Right.Y},
-                {1,1,1,1}
             });
 
             return body_Y;
@@ -131,7 +129,6 @@ namespace SRTOptimization.Kinect_Device
                 {body.Joints[JointType.Head].Position.Z, body.Joints[JointType.Neck].Position.Z, body.Joints[JointType.SpineMid].Position.Z, body.Joints[JointType.SpineBase].Position.Z},
                 {body.Joints[JointType.ShoulderLeft].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristLeft].Position.Z, body.Joints[JointType.ThumbLeft].Position.Z},
                 {body.Joints[JointType.ShoulderRight].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristRight].Position.Z, body.Joints[JointType.ThumbRight].Position.Z},
-                {1,1,1,1}
         });
             return body_Z;
         }

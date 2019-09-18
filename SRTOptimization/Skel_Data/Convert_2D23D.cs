@@ -27,7 +27,7 @@ namespace SRTOptimization.Skel_Data
 
             result = ((mat_X * fx)+(cx*mat_Z));
 
-            for(int i = 0; i < 4; i++)
+            for(int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 4; j++){
                     mat_X[i,j]=mat_X[i, j] / mat_Z[i, j];
@@ -46,7 +46,7 @@ namespace SRTOptimization.Skel_Data
             result = ((mat_Y * fy) + (cy * mat_Z));
             try
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 4; j++)
                     {

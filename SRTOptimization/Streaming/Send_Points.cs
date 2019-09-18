@@ -36,9 +36,6 @@ namespace SRTOptimization.Streaming
 
                 sock.Send(data);
                 Console.Write("Data Sent!\r\n");
-                Console.Write("Press any key To continue...");
-                Console.Read();
-                sock.Close();
             }
         }
     }
