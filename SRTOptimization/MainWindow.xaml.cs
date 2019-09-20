@@ -40,26 +40,27 @@ namespace SRTOptimization
 
         public double[,] byte2go;
 
-        public string angle01 = "0";
-        public string angle02 = "0";
-        public string angle03 = "0";
-        public string angle04 = "0";
-        public string angle05 = "0";
-        public string angle06 = "0";
-        public string angle07 = "0";
-        public string angle08 = "0";
-        public string angle09 = "0";
-        public string angle10 = "0";
-        public string angle11 = "0";
-        public string angle12 = "0";
-        public string angle13 = "0";
-        public string angle14 = "0";
-        public string angle15 = "0";
-        public string angle16 = "0";
-        public string angle17 = "0";
+        public double angle01 = 0;
+        public double angle02 = 0;
+        public double angle03 = 0;
+        public double angle04 = 0;
+        public double angle05 = 0;
+        public double angle06 = 0;
+        public double angle07 = 0;
+        public double angle08 = 0;
+        public double angle09 = 0;
+        public double angle10 = 0;
+        public double angle11 = 0;
+        public double angle12 = 0;
+        public double angle13 = 0;
+        public double angle14 = 0;
+        public double angle15 = 0;
+        public double angle16 = 0;
+        public double angle17 = 0;
 
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
         Streaming.SendAngles sendBuf = new Streaming.SendAngles();
+
         byte[] buffer;
 
         #region Kinect_Matrix
@@ -157,288 +158,301 @@ namespace SRTOptimization
         void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             var frame = e.FrameReference.AcquireFrame();
-            while (true)
+            Matrix<double> Angle_Set_Elbow = DenseMatrix.OfArray(new double[,]{
+            {angle01},
+            {angle02},
+            });
+            Matrix<double> Angle_Set_ArmSide = DenseMatrix.OfArray(new double[,]{
+            {angle03},
+            {angle04},
+            });
+            Matrix<double> Angle_Set_ArmFrontal = DenseMatrix.OfArray(new double[,]{
+            {angle05},
+            {angle06},
+            });
+            if (frame != null)
             {
-                if (frame != null)
+                canvas.Children.Clear();
+                bodies = new Body[frame.BodyFrameSource.BodyCount];
+                frame.GetAndRefreshBodyData(bodies);
+                ulong TrackedOnly = 0;
+
+                foreach (var body in bodies)
                 {
-                    canvas.Children.Clear();
-                    bodies = new Body[frame.BodyFrameSource.BodyCount];
-                    frame.GetAndRefreshBodyData(bodies);
-                    ulong TrackedOnly = 0;
-
-                    foreach (var body in bodies)
+                    if (bodies != null)
                     {
-                        if (bodies != null)
+                        if (body.IsTracked)
                         {
-                            if (body.IsTracked)
+                            try
                             {
-                                try
+                                if (TrackedOnly == 0)
                                 {
-                                    if (TrackedOnly == 0)
-                                    {
-                                        TrackedOnly = body.TrackingId;
-                                    }
-
-                                    if (body.TrackingId == TrackedOnly)
-                                    {
-                                        Kinect_Device.Kinect_Mat_X _Mat_X_01 = new Kinect_Device.Kinect_Mat_X();
-                                        Kinect_Device.Kinect_Mat_Y _Mat_Y_01 = new Kinect_Device.Kinect_Mat_Y();
-                                        Kinect_Device.Kinect_Mat_Z _Mat_Z_01 = new Kinect_Device.Kinect_Mat_Z();
-
-                                        _Mat_X_01.Get_Bodies(body, sensor);
-                                        _Mat_Y_01.Get_Bodies(body, sensor);
-                                        _Mat_Z_01.Get_Bodies(body, sensor);
-
-                                        mat_X_01 = _Mat_X_01.body_X;
-                                        mat_Y_01 = _Mat_Y_01.body_Y;
-                                        mat_Z_01 = _Mat_Z_01.body_Z;
-
-                                        mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
-                                        mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
-                                        mat_Z_01 = mat_Z_01 * 1000;
-
-                                        skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
-                                        {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head
-                                        {mat_X_01[0,1], mat_Y_01[0,1], mat_Z_01[0,1] }, //Neck
-                                        {mat_X_01[0,2], mat_Y_01[0,2], mat_Z_01[0,2] }, //Spine_Mid
-                                        {mat_X_01[0,3], mat_Y_01[0,3], mat_Z_01[0,3] }, //Spine_Base
-                                        {mat_X_01[1,0], mat_Y_01[1,0], mat_Z_01[1,0] }, //Shoulder_Left
-                                        {mat_X_01[1,1], mat_Y_01[1,1], mat_Z_01[1,1] }, //Elbow_Left
-                                        {mat_X_01[1,2], mat_Y_01[1,2], mat_Z_01[1,2] }, //Wrist_Left
-                                        {mat_X_01[1,3], mat_Y_01[1,3], mat_Z_01[1,3] }, //Thumb_Left
-                                        {mat_X_01[2,0], mat_Y_01[2,0], mat_Z_01[2,0] }, //Shoulder_Left
-                                        {mat_X_01[2,1], mat_Y_01[2,1], mat_Z_01[2,1] }, //Elbow_Left
-                                        {mat_X_01[2,2], mat_Y_01[2,2], mat_Z_01[2,2] }, //Wrist_Left
-                                        {mat_X_01[2,3], mat_Y_01[2,3], mat_Z_01[2,3] }, //Thumb_Left
-                                     });
-
-                                        Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
-                                        Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
-
-                                        recv_Points.Recv_Skel(skel_Mat_02_byte);
-                                        skel_Mat_02 = serialFunc.Deserialize<Matrix<double>>(skel_Mat_02_byte);
-
-                                        Console.WriteLine(skel_Mat_02_byte);
-
-
-
-
-                                        //Console.WriteLine(mat_X_01);
-                                        //Console.WriteLine(mat_Y_01);
-                                        //Console.WriteLine(mat_Z_01);
-
-                                        #region DrawSkeleton_01
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawHead = new Ellipse
-                                            {
-                                                Fill = Brushes.LightPink,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
-                                            Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
-                                            canvas.Children.Add(drawHead);
-                                            textCanvas.Text = "[Monitor Coordinates] \nHead : (" + mat_X_01[0, 0].ToString("F3") + "  ,  " + mat_Y_01[0, 0].ToString("F3") + "  ,  " + mat_Z_01[0, 0].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawNeck = new Ellipse
-                                            {
-                                                Fill = Brushes.LightPink,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-
-                                            Canvas.SetLeft(drawNeck, mat_X_01[0, 1] - drawNeck.Width / 2);
-                                            Canvas.SetTop(drawNeck, mat_Y_01[0, 1] - drawNeck.Width / 2);
-                                            canvas.Children.Add(drawNeck);
-                                            textCanvas.Text += "Neck : (" + mat_X_01[0, 1].ToString("F3") + "  ,  " + mat_Y_01[0, 1].ToString("F3") + "  ,  " + mat_Z_01[0, 1].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawSpineMid = new Ellipse
-                                            {
-                                                Fill = Brushes.LightPink,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] - drawSpineMid.Width / 2);
-                                            Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] - drawSpineMid.Width / 2);
-                                            canvas.Children.Add(drawSpineMid);
-                                            textCanvas.Text += "SpineMid : (" + mat_X_01[0, 2].ToString("F3") + "  ,  " + mat_Y_01[0, 2].ToString("F3") + "  ,  " + mat_Z_01[0, 2].ToString("F3") + ")\n";
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawSpineBase = new Ellipse
-                                            {
-                                                Fill = Brushes.LightPink,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] - drawSpineBase.Width / 2);
-                                            Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
-                                            canvas.Children.Add(drawSpineBase);
-                                            textCanvas.Text += "SpineBase : (" + mat_X_01[0, 3].ToString("F3") + "  ,  " + mat_Y_01[0, 3].ToString("F3") + "  ,  " + mat_Z_01[0, 3].ToString("F3") + ")\n";
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawShoulderLeft = new Ellipse
-                                            {
-                                                Fill = Brushes.LimeGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] - drawShoulderLeft.Width / 2);
-                                            Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] - drawShoulderLeft.Width / 2);
-                                            canvas.Children.Add(drawShoulderLeft);
-                                            textCanvas.Text += "ShoulderLeft : (" + mat_X_01[1, 0].ToString("F3") + "  ,  " + mat_Y_01[1, 0].ToString("F3") + "  ,  " + mat_Z_01[1, 0].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawElbowLeft = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSkyBlue,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] - drawElbowLeft.Width / 2);
-                                            Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] - drawElbowLeft.Width / 2);
-                                            canvas.Children.Add(drawElbowLeft);
-                                            textCanvas.Text += "ElbowLeft : (" + mat_X_01[1, 1].ToString("F3") + "  ,  " + mat_Y_01[1, 1].ToString("F3") + "  ,  " + mat_Z_01[1, 1].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawWristLeft = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSeaGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] - drawWristLeft.Width / 2);
-                                            Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] - drawWristLeft.Width / 2);
-                                            canvas.Children.Add(drawWristLeft);
-                                            textCanvas.Text += "WristLeft : (" + mat_X_01[1, 2].ToString("F3") + "  ,  " + mat_Y_01[1, 2].ToString("F3") + "  ,  " + mat_Z_01[1, 2].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawThumbLeft = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSeaGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawThumbLeft, mat_X_01[1, 2] - drawThumbLeft.Width / 2);
-                                            Canvas.SetTop(drawThumbLeft, mat_Y_01[1, 2] - drawThumbLeft.Width / 2);
-                                            canvas.Children.Add(drawThumbLeft);
-                                            textCanvas.Text += "ThumbLeft : (" + mat_X_01[1, 3].ToString("F3") + "  ,  " + mat_Y_01[1, 3].ToString("F3") + "  ,  " + mat_Z_01[1, 3].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawShoulderRight = new Ellipse
-                                            {
-                                                Fill = Brushes.LimeGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawShoulderRight, mat_X_01[2, 0] - drawShoulderRight.Width / 2);
-                                            Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] - drawShoulderRight.Width / 2);
-                                            canvas.Children.Add(drawShoulderRight);
-                                            textCanvas.Text += "ShoulderRight : (" + mat_X_01[2, 0].ToString("F3") + "  ,  " + mat_Y_01[2, 0].ToString("F3") + "  ,  " + mat_Z_01[2, 0].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawElbowRight = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSkyBlue,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawElbowRight, mat_X_01[2, 1] - drawElbowRight.Width / 2);
-                                            Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] - drawElbowRight.Width / 2);
-                                            canvas.Children.Add(drawElbowRight);
-                                            textCanvas.Text += "ElbowRight : (" + mat_X_01[2, 1].ToString("F3") + "  ,  " + mat_Y_01[2, 1].ToString("F3") + "  ,  " + mat_Z_01[2, 1].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawWristRight = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSeaGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawWristRight, mat_X_01[2, 2] - drawWristRight.Width / 2);
-                                            Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
-                                            canvas.Children.Add(drawWristRight);
-                                            textCanvas.Text += "WristRight : (" + mat_X_01[2, 2].ToString("F3") + "  ,  " + mat_Y_01[2, 2].ToString("F3") + "  ,  " + mat_Z_01[2, 2].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                        {
-                                            Ellipse drawThumbRight = new Ellipse
-                                            {
-                                                Fill = Brushes.LightSeaGreen,
-                                                Width = 10,
-                                                Height = 10
-                                            };
-
-                                            Canvas.SetLeft(drawThumbRight, mat_X_01[2, 2] - drawThumbRight.Width / 2);
-                                            Canvas.SetTop(drawThumbRight, mat_Y_01[2, 2] - drawThumbRight.Width / 2);
-                                            canvas.Children.Add(drawThumbRight);
-                                            textCanvas.Text += "ThumbRight : (" + mat_X_01[2, 3].ToString("F3") + "  ,  " + mat_Y_01[2, 3].ToString("F3") + "  ,  " + mat_Z_01[2, 3].ToString("F3") + ")\n";
-
-                                        }));
-
-                                        #endregion
-
-                                        #region SendAngleto EveR
-                                        //sendBuf.SendBuf(angle01+angle02+ angle03 + angle04 + angle05 + angle06 + angle07 + angle08 + angle09 + angle10 + angle11 + angle12 + angle13 + angle14 + angle15 + angle16 + angle17);
-                                        #endregion
-                                    }
-
+                                    TrackedOnly = body.TrackingId;
                                 }
 
-                                catch (NullReferenceException ex)
+                                if (body.TrackingId == TrackedOnly)
                                 {
-                                    Console.WriteLine(ex.ToString());
+                                    Kinect_Device.Kinect_Mat_X _Mat_X_01 = new Kinect_Device.Kinect_Mat_X();
+                                    Kinect_Device.Kinect_Mat_Y _Mat_Y_01 = new Kinect_Device.Kinect_Mat_Y();
+                                    Kinect_Device.Kinect_Mat_Z _Mat_Z_01 = new Kinect_Device.Kinect_Mat_Z();
+
+                                    _Mat_X_01.Get_Bodies(body, sensor);
+                                    _Mat_Y_01.Get_Bodies(body, sensor);
+                                    _Mat_Z_01.Get_Bodies(body, sensor);
+
+                                    mat_X_01 = _Mat_X_01.body_X;
+                                    mat_Y_01 = _Mat_Y_01.body_Y;
+                                    mat_Z_01 = _Mat_Z_01.body_Z;
+
+                                    mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
+                                    mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
+                                    mat_Z_01 = mat_Z_01 * 1000;
+
+                                    skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
+                                        {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
+                                        {mat_X_01[0,1], mat_Y_01[0,1], mat_Z_01[0,1] }, //Neck          1
+                                        {mat_X_01[0,2], mat_Y_01[0,2], mat_Z_01[0,2] }, //Spine_Mid     2
+                                        {mat_X_01[0,3], mat_Y_01[0,3], mat_Z_01[0,3] }, //Spine_Base    3    
+                                        {mat_X_01[1,0], mat_Y_01[1,0], mat_Z_01[1,0] }, //Shoulder_Left 4
+                                        {mat_X_01[1,1], mat_Y_01[1,1], mat_Z_01[1,1] }, //Elbow_Left    5
+                                        {mat_X_01[1,2], mat_Y_01[1,2], mat_Z_01[1,2] }, //Wrist_Left    6
+                                        {mat_X_01[1,3], mat_Y_01[1,3], mat_Z_01[1,3] }, //Thumb_Left    7
+                                        {mat_X_01[2,0], mat_Y_01[2,0], mat_Z_01[2,0] }, //Shoulder_Right8
+                                        {mat_X_01[2,1], mat_Y_01[2,1], mat_Z_01[2,1] }, //Elbow_Right   9
+                                        {mat_X_01[2,2], mat_Y_01[2,2], mat_Z_01[2,2] }, //Wrist_Right   10
+                                        {mat_X_01[2,3], mat_Y_01[2,3], mat_Z_01[2,3] }, //Thumb_Right   11
+                                         });
+
+                                    Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
+
+                                    Angle_Set_Elbow =vector_Func.AngleTransform_Elbow(skel_Mat_01);
+                                    Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
+                                    Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
+
+                                    //Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
+                                    //Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
+
+                                    //recv_Points.Recv_Skel(skel_Mat_02_byte);
+                                    //skel_Mat_02 = serialFunc.Deserialize<Matrix<double>>(skel_Mat_02_byte);
+
+                                    //Console.WriteLine(skel_Mat_02_byte);
+
+                                    //Console.WriteLine(mat_X_01);
+                                    //Console.WriteLine(mat_Y_01);
+                                    //Console.WriteLine(mat_Z_01);
+
+                                    #region DrawSkeleton_01
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawHead = new Ellipse
+                                        {
+                                            Fill = Brushes.LightPink,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
+                                        Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
+                                        canvas.Children.Add(drawHead);
+                                        textCanvas.Text = "[Monitor Coordinates] \nHead : (" + mat_X_01[0, 0].ToString("F3") + "  ,  " + mat_Y_01[0, 0].ToString("F3") + "  ,  " + mat_Z_01[0, 0].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawNeck = new Ellipse
+                                        {
+                                            Fill = Brushes.LightPink,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+
+                                        Canvas.SetLeft(drawNeck, mat_X_01[0, 1] - drawNeck.Width / 2);
+                                        Canvas.SetTop(drawNeck, mat_Y_01[0, 1] - drawNeck.Width / 2);
+                                        canvas.Children.Add(drawNeck);
+                                        textCanvas.Text += "Neck : (" + mat_X_01[0, 1].ToString("F3") + "  ,  " + mat_Y_01[0, 1].ToString("F3") + "  ,  " + mat_Z_01[0, 1].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawSpineMid = new Ellipse
+                                        {
+                                            Fill = Brushes.LightPink,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawSpineMid, mat_X_01[0, 2] - drawSpineMid.Width / 2);
+                                        Canvas.SetTop(drawSpineMid, mat_Y_01[0, 2] - drawSpineMid.Width / 2);
+                                        canvas.Children.Add(drawSpineMid);
+                                        textCanvas.Text += "SpineMid : (" + mat_X_01[0, 2].ToString("F3") + "  ,  " + mat_Y_01[0, 2].ToString("F3") + "  ,  " + mat_Z_01[0, 2].ToString("F3") + ")\n";
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawSpineBase = new Ellipse
+                                        {
+                                            Fill = Brushes.LightPink,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawSpineBase, mat_X_01[0, 3] - drawSpineBase.Width / 2);
+                                        Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
+                                        canvas.Children.Add(drawSpineBase);
+                                        textCanvas.Text += "SpineBase : (" + mat_X_01[0, 3].ToString("F3") + "  ,  " + mat_Y_01[0, 3].ToString("F3") + "  ,  " + mat_Z_01[0, 3].ToString("F3") + ")\n";
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawShoulderLeft = new Ellipse
+                                        {
+                                            Fill = Brushes.LimeGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawShoulderLeft, mat_X_01[1, 0] - drawShoulderLeft.Width / 2);
+                                        Canvas.SetTop(drawShoulderLeft, mat_Y_01[1, 0] - drawShoulderLeft.Width / 2);
+                                        canvas.Children.Add(drawShoulderLeft);
+                                        textCanvas.Text += "ShoulderLeft : (" + mat_X_01[1, 0].ToString("F3") + "  ,  " + mat_Y_01[1, 0].ToString("F3") + "  ,  " + mat_Z_01[1, 0].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawElbowLeft = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSkyBlue,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawElbowLeft, mat_X_01[1, 1] - drawElbowLeft.Width / 2);
+                                        Canvas.SetTop(drawElbowLeft, mat_Y_01[1, 1] - drawElbowLeft.Width / 2);
+                                        canvas.Children.Add(drawElbowLeft);
+                                        textCanvas.Text += "ElbowLeft : (" + mat_X_01[1, 1].ToString("F3") + "  ,  " + mat_Y_01[1, 1].ToString("F3") + "  ,  " + mat_Z_01[1, 1].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawWristLeft = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSeaGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawWristLeft, mat_X_01[1, 2] - drawWristLeft.Width / 2);
+                                        Canvas.SetTop(drawWristLeft, mat_Y_01[1, 2] - drawWristLeft.Width / 2);
+                                        canvas.Children.Add(drawWristLeft);
+                                        textCanvas.Text += "WristLeft : (" + mat_X_01[1, 2].ToString("F3") + "  ,  " + mat_Y_01[1, 2].ToString("F3") + "  ,  " + mat_Z_01[1, 2].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawThumbLeft = new Ellipse
+                                        {
+                                            Fill = Brushes.Red,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawThumbLeft, mat_X_01[1, 3] - drawThumbLeft.Width / 2);
+                                        Canvas.SetTop(drawThumbLeft, mat_Y_01[1, 3] - drawThumbLeft.Width / 2);
+                                        canvas.Children.Add(drawThumbLeft);
+                                        textCanvas.Text += "ThumbLeft : (" + mat_X_01[1, 3].ToString("F3") + "  ,  " + mat_Y_01[1, 3].ToString("F3") + "  ,  " + mat_Z_01[1, 3].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawShoulderRight = new Ellipse
+                                        {
+                                            Fill = Brushes.LimeGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawShoulderRight, mat_X_01[2, 0] - drawShoulderRight.Width / 2);
+                                        Canvas.SetTop(drawShoulderRight, mat_Y_01[2, 0] - drawShoulderRight.Width / 2);
+                                        canvas.Children.Add(drawShoulderRight);
+                                        textCanvas.Text += "ShoulderRight : (" + mat_X_01[2, 0].ToString("F3") + "  ,  " + mat_Y_01[2, 0].ToString("F3") + "  ,  " + mat_Z_01[2, 0].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawElbowRight = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSkyBlue,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawElbowRight, mat_X_01[2, 1] - drawElbowRight.Width / 2);
+                                        Canvas.SetTop(drawElbowRight, mat_Y_01[2, 1] - drawElbowRight.Width / 2);
+                                        canvas.Children.Add(drawElbowRight);
+                                        textCanvas.Text += "ElbowRight : (" + mat_X_01[2, 1].ToString("F3") + "  ,  " + mat_Y_01[2, 1].ToString("F3") + "  ,  " + mat_Z_01[2, 1].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawWristRight = new Ellipse
+                                        {
+                                            Fill = Brushes.LightSeaGreen,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawWristRight, mat_X_01[2, 2] - drawWristRight.Width / 2);
+                                        Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
+                                        canvas.Children.Add(drawWristRight);
+                                        textCanvas.Text += "WristRight : (" + mat_X_01[2, 2].ToString("F3") + "  ,  " + mat_Y_01[2, 2].ToString("F3") + "  ,  " + mat_Z_01[2, 2].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    {
+                                        Ellipse drawThumbRight = new Ellipse
+                                        {
+                                            Fill = Brushes.Red,
+                                            Width = 10,
+                                            Height = 10
+                                        };
+
+                                        Canvas.SetLeft(drawThumbRight, mat_X_01[2, 3] - drawThumbRight.Width / 2);
+                                        Canvas.SetTop(drawThumbRight, mat_Y_01[2, 3] - drawThumbRight.Width / 2);
+                                        canvas.Children.Add(drawThumbRight);
+                                        textCanvas.Text += "ThumbRight : (" + mat_X_01[2, 3].ToString("F3") + "  ,  " + mat_Y_01[2, 3].ToString("F3") + "  ,  " + mat_Z_01[2, 3].ToString("F3") + ")\n";
+
+                                    }));
+
+                                    #endregion
+
+                                    #region SendAngleto EveR
+                                    //sendBuf.SendBuf(angle01+angle02+ angle03 + angle04 + angle05 + angle06 + angle07 + angle08 + angle09 + angle10 + angle11 + angle12 + angle13 + angle14 + angle15 + angle16 + angle17);
+                                    #endregion
                                 }
 
                             }
+
+                            catch (NullReferenceException ex)
+                            {
+                                Console.WriteLine(ex.ToString());
+                            }
+
                         }
                     }
                 }
             }
+
 
         }
         void OnDepthFrameArrived(object sender, DepthFrameArrivedEventArgs e)
