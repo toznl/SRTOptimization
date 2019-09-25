@@ -229,6 +229,10 @@ namespace SRTOptimization
                                     Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
                                     Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
 
+                                    Console.WriteLine(Angle_Set_Elbow);
+                                    Console.WriteLine(Angle_Set_ArmSide);
+                                    Console.WriteLine(Angle_Set_ArmFrontal);
+
                                     //Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
                                     //Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
 
@@ -237,9 +241,6 @@ namespace SRTOptimization
 
                                     //Console.WriteLine(skel_Mat_02_byte);
 
-                                    //Console.WriteLine(mat_X_01);
-                                    //Console.WriteLine(mat_Y_01);
-                                    //Console.WriteLine(mat_Z_01);
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));

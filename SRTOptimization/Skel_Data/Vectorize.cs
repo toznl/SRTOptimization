@@ -166,8 +166,8 @@ namespace SRTOptimization.Skel_Data
 
             Matrix<double> vector_Right_03 = DenseMatrix.OfArray(new double[,] //Wrist_Right
             {
-                {mat_Skel[10,2] },
-                {mat_Skel[10,2] },
+                {mat_Skel[10,0] },
+                {mat_Skel[10,1] },
                 {mat_Skel[10,2] }
             });
 
