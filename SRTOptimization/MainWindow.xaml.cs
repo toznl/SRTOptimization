@@ -170,6 +170,31 @@ namespace SRTOptimization
             {angle05},
             {angle06},
             });
+
+            Matrix<double> Angle_Set = DenseMatrix.OfArray(new double[,]
+            {
+                {angle01 },
+                {angle02 },
+                {angle03 },
+                {angle04 },
+                {angle05 },
+                {angle06 },
+                {angle07 },
+                {angle08 },
+                {angle09 },
+                {angle10 },
+                {angle11 },
+                {angle12 },
+                {angle13 },
+                {angle14 },
+                {angle15 },
+                {angle16 },
+                {angle17 }
+            });
+
+            Matrix<double> W_Matrix;
+
+
             if (frame != null)
             {
                 canvas.Children.Clear();
@@ -224,14 +249,15 @@ namespace SRTOptimization
                                          });
 
                                     Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
+                                    Skel_Data.LAM LAM = new Skel_Data.LAM();
 
-                                    Angle_Set_Elbow =vector_Func.AngleTransform_Elbow(skel_Mat_01);
+                                    Angle_Set_Elbow = vector_Func.AngleTransform_Elbow(skel_Mat_01);
                                     Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
                                     Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
 
-                                    Console.WriteLine(Angle_Set_Elbow);
-                                    Console.WriteLine(Angle_Set_ArmSide);
-                                    Console.WriteLine(Angle_Set_ArmFrontal);
+                                    W_Matrix = LAM.W_Matrix_Pattern01(Angle_Set) + LAM.W_Matrix_Pattern02(Angle_Set);
+
+
 
                                     //Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
                                     //Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
