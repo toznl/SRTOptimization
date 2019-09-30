@@ -171,25 +171,16 @@ namespace SRTOptimization
             {angle06},
             });
 
-            Matrix<double> Angle_Set = DenseMatrix.OfArray(new double[,]
+            Matrix<double> Angle_Set_Arm = DenseMatrix.OfArray(new double[,]
             {
-                {angle01 },
-                {angle02 },
-                {angle03 },
-                {angle04 },
                 {angle05 },
                 {angle06 },
                 {angle07 },
                 {angle08 },
-                {angle09 },
-                {angle10 },
                 {angle11 },
                 {angle12 },
                 {angle13 },
                 {angle14 },
-                {angle15 },
-                {angle16 },
-                {angle17 }
             });
 
             Matrix<double> W_Matrix;
@@ -255,15 +246,9 @@ namespace SRTOptimization
                                     Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
                                     Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
 
-                                    
-
-                                    W_Matrix = LAM.W_Matrix_Pattern01(Angle_Set) + LAM.W_Matrix_Pattern02(Angle_Set);
-
-                                   
-
                                     for (int i = 0; i < 2; i++)
                                     {
-                                        Angle_Set_ArmSide[i,0]=(double)((int)Angle_Set_ArmSide[i, 0] / 10)*10;
+                                        Angle_Set_ArmSide[i,0]=(double)((int)(Angle_Set_ArmSide[i, 0]*0.8) / 5)*5;
                                         if (Angle_Set_ArmSide[i, 0] < 0)
                                         {
                                             Angle_Set_ArmSide[i, 0] = 0;
@@ -274,11 +259,7 @@ namespace SRTOptimization
                                             Angle_Set_ArmSide[i, 0] = 100;
                                         }
 
-                                    }
-
-                                    for (int i = 0; i < 2; i++)
-                                    {
-                                        Angle_Set_ArmFrontal[i, 0] = (double)((int)Angle_Set_ArmFrontal[i, 0] / 10) * 10;
+                                        Angle_Set_ArmFrontal[i, 0] = (double)((int)(Angle_Set_ArmFrontal[i, 0]*0.8) / 5) * 5;
                                         if (Angle_Set_ArmFrontal[i, 0] < 0)
                                         {
                                             Angle_Set_ArmFrontal[i, 0] = 0;
@@ -289,23 +270,33 @@ namespace SRTOptimization
                                             Angle_Set_ArmFrontal[i, 0] = 0;
                                         }
 
-                                    }
-
-                                    for (int i = 0; i < 2; i++)
-                                    {
-
-                                        Angle_Set_Elbow[i, 0] = (double)((int)Angle_Set_Elbow[i, 0] / 10) * 10;
+                                        Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]*0.8) / 5) * 5;
                                         if (Angle_Set_Elbow[i, 0] < 0)
                                         {
                                             Angle_Set_Elbow[i, 0] = 0;
                                         }
+
+                                        if (Angle_Set_Elbow[i, 0] > 90)
+                                        {
+                                            Angle_Set_Elbow[i,0] = 90;
+                                        }
+
                                     }
+
 
                                     Console.WriteLine(Angle_Set_ArmSide);
                                     Console.WriteLine(Angle_Set_ArmFrontal);
                                     Console.WriteLine(Angle_Set_Elbow);
 
+                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
+                                    Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
+                                    Angle_Set_Arm[2, 0] = 0;
+                                    Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
 
+                                    Angle_Set_Arm[4, 0] = Angle_Set_ArmFrontal[1, 0];
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmSide[1, 0];
+                                    Angle_Set_Arm[6, 0] = 0;
+                                    Angle_Set_Arm[7, 0] = Angle_Set_Elbow[1, 0];
 
                                     //Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
                                     //Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
