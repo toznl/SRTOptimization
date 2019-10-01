@@ -19,7 +19,7 @@ namespace SRTOptimization.Streaming
         {
             {
                 sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.200"), 5001);
 
                 try
                 {

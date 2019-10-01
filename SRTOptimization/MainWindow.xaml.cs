@@ -17,6 +17,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 
+using System.Net;
+using System.Net.Sockets;
+
 
 using Microsoft.Kinect;
 
@@ -254,9 +257,9 @@ namespace SRTOptimization
                                             Angle_Set_ArmSide[i, 0] = 0;
                                         }
 
-                                        if (Angle_Set_ArmSide[i, 0] > 100)
+                                        if (Angle_Set_ArmSide[i, 0] > 90)
                                         {
-                                            Angle_Set_ArmSide[i, 0] = 100;
+                                            Angle_Set_ArmSide[i, 0] = 90;
                                         }
 
                                         Angle_Set_ArmFrontal[i, 0] = (double)((int)(Angle_Set_ArmFrontal[i, 0]*0.8) / 5) * 5;
@@ -265,9 +268,9 @@ namespace SRTOptimization
                                             Angle_Set_ArmFrontal[i, 0] = 0;
                                         }
 
-                                        if (Angle_Set_ArmFrontal[i, 0] < 0)
+                                        if (Angle_Set_ArmFrontal[i, 0] > 90)
                                         {
-                                            Angle_Set_ArmFrontal[i, 0] = 0;
+                                            Angle_Set_ArmFrontal[i, 0] = 90;
                                         }
 
                                         Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]*0.8) / 5) * 5;
@@ -298,14 +301,7 @@ namespace SRTOptimization
                                     Angle_Set_Arm[6, 0] = 0;
                                     Angle_Set_Arm[7, 0] = Angle_Set_Elbow[1, 0];
 
-                                    //Streaming.SerialFunc serialFunc = new Streaming.SerialFunc();
-                                    //Streaming.Recv_Points recv_Points = new Streaming.Recv_Points();
-
-                                    //recv_Points.Recv_Skel(skel_Mat_02_byte);
-                                    //skel_Mat_02 = serialFunc.Deserialize<Matrix<double>>(skel_Mat_02_byte);
-
-                                    //Console.WriteLine(skel_Mat_02_byte);
-
+                                    string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[0, 0] + ","+Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[4, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + "," + Angle_Set_Arm[7, 0];
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
@@ -503,7 +499,7 @@ namespace SRTOptimization
                                     #endregion
 
                                     #region SendAngleto EveR
-                                    //sendBuf.SendBuf(angle01+angle02+ angle03 + angle04 + angle05 + angle06 + angle07 + angle08 + angle09 + angle10 + angle11 + angle12 + angle13 + angle14 + angle15 + angle16 + angle17);
+                                    sending(data);
                                     #endregion
                                 }
 
@@ -516,6 +512,7 @@ namespace SRTOptimization
 
                         }
                     }
+                    
                 }
             }
 
@@ -531,6 +528,49 @@ namespace SRTOptimization
                 }
             }
         }
+        public void sending(string data)
+        {
+            TcpClient tc = new TcpClient("192.168.0.200", 5001);
+            NetworkStream stream = tc.GetStream();
+
+            byte[] check_sum = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int packet_type = 0x02;
+            int tr_no = 0;
+            int data_type = 5000;
+            string[] stringArray = new string[1492];
+            byte[] buff;
+            int data_len;
+
+            buff = Encoding.ASCII.GetBytes(data);
+            data_len = data.Length;
+
+            check_sum[0] = 0x55;
+            check_sum[1] = (byte)(packet_type & 0xff);
+            check_sum[2] = (byte)(tr_no & 0xff);
+            check_sum[3] = (byte)((tr_no >> 8) & 0xff);
+            check_sum[4] = (byte)(data_len & 0xff);
+            check_sum[5] = (byte)((data_len >> 8) & 0xff);
+            check_sum[6] = (byte)(data_type & 0xff);
+            check_sum[7] = (byte)((data_type >> 8) & 0xff);
+
+            int sum = check_sum[0] + check_sum[1] + check_sum[2] + check_sum[3] + check_sum[4] + check_sum[5] + check_sum[6] + check_sum[7];
+
+            int data_sum = 0;
+
+            for (int i = 0; i < data_len; i++)
+            {
+                data_sum += buff[i];
+            }
+
+            check_sum[8] = (byte)(sum & 0xff);
+            check_sum[9] = (byte)(data_sum & 0xff);
+
+            byte[] msg = new byte[check_sum.Length + buff.Length];
+            Buffer.BlockCopy(check_sum, 0, msg, 0, check_sum.Length);
+            Buffer.BlockCopy(buff, 0, msg, check_sum.Length, buff.Length);
+
+            stream.Write(msg, 0, msg.Length);
+         }
 
     }
 }
