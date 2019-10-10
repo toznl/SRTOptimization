@@ -130,7 +130,6 @@ namespace SRTOptimization
 
             this.bodyReader = this.sensor.BodyFrameSource.OpenReader();
             this.bodyReader.FrameArrived += OnBodyFrameArrived;
-
         }
 
         void CloseReader(object sender, RoutedEventArgs e)
@@ -145,7 +144,7 @@ namespace SRTOptimization
         }
         //release Kinect v2 Sensor
         void ReleaseSensor()
-        {
+        {   
             this.sensor.Close();
             this.sensor = null;
         }
@@ -185,9 +184,6 @@ namespace SRTOptimization
                 {angle13 },
                 {angle14 },
             });
-
-            Matrix<double> W_Matrix;
-
 
             if (frame != null)
             {
@@ -295,7 +291,7 @@ namespace SRTOptimization
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
                                     Angle_Set_Arm[2, 0] = 0;
                                     Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
-
+    
                                     Angle_Set_Arm[4, 0] = Angle_Set_ArmFrontal[1, 0];
                                     Angle_Set_Arm[5, 0] = Angle_Set_ArmSide[1, 0];
                                     Angle_Set_Arm[6, 0] = 0;
@@ -498,9 +494,8 @@ namespace SRTOptimization
 
                                     #endregion
 
-                                    #region SendAngleto EveR
+                                    //SendAngleto EveR
                                     sending(data);
-                                    #endregion
                                 }
 
                             }
