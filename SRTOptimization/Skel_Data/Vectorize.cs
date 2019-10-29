@@ -185,6 +185,96 @@ namespace SRTOptimization.Skel_Data
             return result;
         }
 
+        public Matrix<double> AngleTransform_ArmSpin1(Matrix<double> mat_Skel)
+        {
+            Matrix<double> result;
+
+            Matrix<double> vector_Left_01 = DenseMatrix.OfArray(new double[,] //Shoulder_Left
+             {
+                {mat_Skel[4,0]},
+                {mat_Skel[4,2]}
+             });
+
+            Matrix<double> vector_Left_02 = DenseMatrix.OfArray(new double[,] //Elbow_Left
+            {
+                {mat_Skel[5,0] },
+                {mat_Skel[5,2] }
+            });
+
+            Matrix<double> vector_Left_03 = DenseMatrix.OfArray(new double[,] //Wrist_Left
+            {
+                {mat_Skel[6,0] },
+                {mat_Skel[6,2] }
+            });
+
+            Matrix<double> vector_Left_04 = DenseMatrix.OfArray(new double[,] //Thumb_Left
+            {
+                {mat_Skel[7,0] },
+                {mat_Skel[7,2] }
+            });
+
+            Matrix<double> vector_Right_01 = DenseMatrix.OfArray(new double[,] //Shoulder_Right
+            {
+                {mat_Skel[8,0] },
+                {mat_Skel[8,2] }
+            });
+
+            Matrix<double> vector_Right_02 = DenseMatrix.OfArray(new double[,] //Elbow_Right
+            {
+                {mat_Skel[9,0] },
+                {mat_Skel[9,2] }
+            });
+
+            Matrix<double> vector_Right_03 = DenseMatrix.OfArray(new double[,] //Wrist_Right
+            {
+                {mat_Skel[10,0] },
+                {mat_Skel[10,2] }
+            });
+
+            Matrix<double> vector_Right_04 = DenseMatrix.OfArray(new double[,] //Thumb_Right
+            {
+                {mat_Skel[11,0] },
+                {mat_Skel[11,2] }
+            });
+
+            Matrix<double> vector_Neck = DenseMatrix.OfArray(new double[,]{
+                {mat_Skel[1,0] },
+                {mat_Skel[1,2] }
+            });
+
+            Matrix<double> vector_LeftArm_Up = vector_Left_02 - vector_Left_01;
+            Matrix<double> vector_LeftArm_Below = vector_Left_02 - vector_Left_03;
+            vector_LeftArm_Below[0, 0] = vector_LeftArm_Below[0, 0] + (vector_LeftArm_Below[0, 0] - vector_Left_01[0, 0]);
+            vector_LeftArm_Below[1, 0] = vector_LeftArm_Below[1, 0] + (vector_LeftArm_Below[1, 0] - vector_Left_01[1, 0]);
+
+            Matrix<double> vector_RightArm_Up = vector_Right_01 - vector_Right_02;
+            Matrix<double> vector_RightArm_Below = vector_Right_02 - vector_Right_03;
+            vector_RightArm_Below[0, 0] = vector_RightArm_Below[0, 0] + (vector_RightArm_Below[0, 0] - vector_Right_01[0, 0]);
+            vector_RightArm_Below[1, 0] = vector_RightArm_Below[1, 0] + (vector_RightArm_Below[1, 0] - vector_Right_01[1, 0]);
+
+            Matrix<double> vector_RightShoulder =  vector_Right_01 - vector_Left_01;
+            Matrix<double> vector_LeftShoulder = vector_Left_01 - vector_Right_01;
+
+            Matrix<double> vector_RightShoulder_Proj = DenseMatrix.OfArray(new double[,]
+            {
+                {vector_RightShoulder[0,0] },
+                {vector_RightShoulder[1,0] }
+            });
+
+            Matrix<double> vector_LeftShoulder_Proj = DenseMatrix.OfArray(new double[,]
+            {
+                {vector_LeftShoulder[0,0] },
+                {vector_LeftShoulder[1,0] }
+            });
+
+            result = DenseMatrix.OfArray(new double[,]{
+            {((Math.Acos(((vector_RightShoulder_Proj[0,0] * vector_RightArm_Below[0,0]) + (vector_RightShoulder_Proj[1,0] * vector_RightArm_Below[1,0]))/ (VectorSize2D(vector_RightShoulder_Proj) * VectorSize2D(vector_RightArm_Below))))*180/Math.PI)-70},
+            {((Math.Acos(((vector_LeftShoulder_Proj[0,0] * vector_LeftArm_Below[0,0]) + (vector_LeftShoulder_Proj[1,0]*vector_LeftArm_Below[1,0])) / (VectorSize2D(vector_LeftShoulder_Proj) * VectorSize2D(vector_LeftArm_Below))))*180/Math.PI)-110}
+            });
+
+            return result;
+        }
+
         public double VectorSize(Matrix<double> Vector)
         {
             double VectorSize;
@@ -202,8 +292,5 @@ namespace SRTOptimization.Skel_Data
 
             return VectorSize;
         }
-
-
-
     }
 }

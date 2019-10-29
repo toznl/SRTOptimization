@@ -172,7 +172,10 @@ namespace SRTOptimization
             {angle05},
             {angle06},
             });
-
+            Matrix<double> Angle_Set_ElbowSpin = DenseMatrix.OfArray(new double[,] {
+                {angle07 },
+                {angle08 }
+            });
             Matrix<double> Angle_Set_Arm = DenseMatrix.OfArray(new double[,]
             {
                 {angle05 },
@@ -244,6 +247,7 @@ namespace SRTOptimization
                                     Angle_Set_Elbow = vector_Func.AngleTransform_Elbow(skel_Mat_01);
                                     Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
                                     Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
+                                    Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin1(skel_Mat_01);
 
                                     for (int i = 0; i < 2; i++)
                                     {
@@ -269,7 +273,7 @@ namespace SRTOptimization
                                             Angle_Set_ArmFrontal[i, 0] = 90;
                                         }
 
-                                        Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]*0.8) / 5) * 5;
+                                        Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]) / 5) * 5;
                                         if (Angle_Set_Elbow[i, 0] < 0)
                                         {
                                             Angle_Set_Elbow[i, 0] = 0;
@@ -279,13 +283,25 @@ namespace SRTOptimization
                                         {
                                             Angle_Set_Elbow[i,0] = 90;
                                         }
+                                        
+                                        Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 5) * 5;
+                                        if (Angle_Set_ElbowSpin[i, 0] < -20)
+                                        {
+                                            Angle_Set_ElbowSpin[i, 0] = -20;
+                                        }
+
+                                        if (Angle_Set_ElbowSpin[i, 0] > 90)
+                                        {
+                                            Angle_Set_ElbowSpin[i, 0] = 90;
+                                        }
 
                                     }
 
 
-                                    Console.WriteLine(Angle_Set_ArmSide);
-                                    Console.WriteLine(Angle_Set_ArmFrontal);
-                                    Console.WriteLine(Angle_Set_Elbow);
+                                    //Console.WriteLine(Angle_Set_ArmSide);
+                                    //Console.WriteLine(Angle_Set_ArmFrontal);
+                                    //Console.WriteLine(Angle_Set_Elbow);
+                                    Console.WriteLine(Angle_Set_ElbowSpin);
 
                                     Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
@@ -495,7 +511,7 @@ namespace SRTOptimization
                                     #endregion
 
                                     //SendAngleto EveR
-                                    sending(data);
+                                    //sending(data);
                                 }
 
                             }
