@@ -63,12 +63,10 @@ namespace SRTOptimization.Skel_Data
             right_Arm[0, 0] = right_Arm[0, 0] + (right_Arm[0, 0] - spine[0, 0]);
             right_Arm[1, 0] = right_Arm[1, 0] + (right_Arm[1, 0] - spine[1, 0]);
 
-            result = DenseMatrix.OfArray(new double[,]{
+            return result = DenseMatrix.OfArray(new double[,]{
             {( Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI},
             {(Math.Acos(((spine[0,0] * right_Arm[0,0]) + (spine[1,0]*right_Arm[1,0])) / (VectorSize2D(spine) * VectorSize2D(right_Arm))))*180/Math.PI}
             });
-
-            return result;
         }
 
         public Matrix<double> AngleTransform_ArmSide(Matrix<double> mat_Skel) //Arm Angle 양옆 위아래
@@ -118,12 +116,10 @@ namespace SRTOptimization.Skel_Data
             right_Arm[0, 0] = right_Arm[0, 0] + (right_Arm[0, 0] - spine[0, 0]);
             right_Arm[1, 0] = right_Arm[1, 0] + (right_Arm[1, 0] - spine[1, 0]);
 
-            result = DenseMatrix.OfArray(new double[,]{
+            return result = DenseMatrix.OfArray(new double[,]{
             {( Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI-30},
             {(Math.Acos(((spine[0,0] * right_Arm[0,0]) + (spine[1,0]*right_Arm[1,0])) / (VectorSize2D(spine) * VectorSize2D(right_Arm))))*180/Math.PI-30}
             });
-
-            return result;
         }
         public Matrix<double> AngleTransform_Elbow(Matrix<double> mat_Skel) //Elbow
         {
@@ -177,102 +173,102 @@ namespace SRTOptimization.Skel_Data
             Matrix<double> vector_RightArm_Up = vector_Right_01 - vector_Right_02;
             Matrix<double> vector_RightArm_Below = vector_Right_02 - vector_Right_03;
 
-            result = DenseMatrix.OfArray(new double[,]{
+            return result = DenseMatrix.OfArray(new double[,]{
             {(180-( Math.Acos(((vector_LeftArm_Up[0,0] * vector_LeftArm_Below[0,0]) + (vector_LeftArm_Up[1,0] * vector_LeftArm_Below[1,0]) + (vector_LeftArm_Up[2,0]*vector_LeftArm_Below[2,0])) / (VectorSize(vector_LeftArm_Up) * VectorSize(vector_LeftArm_Below))))*180/Math.PI)},
             {(180-( Math.Acos(((vector_RightArm_Up[0,0] * vector_RightArm_Below[0,0]) + (vector_RightArm_Up[1,0] * vector_RightArm_Below[1,0]) + (vector_RightArm_Up[2,0]*vector_RightArm_Below[2,0])) / (VectorSize(vector_RightArm_Up) * VectorSize(vector_RightArm_Below))))*180/Math.PI)}
             });
-
-            return result;
         }
 
-        public Matrix<double> AngleTransform_ArmSpin1(Matrix<double> mat_Skel)
+        public Matrix<double> AngleTransform_ArmSpin(Matrix<double> mat_Skel)
         {
             Matrix<double> result;
 
             Matrix<double> vector_Left_01 = DenseMatrix.OfArray(new double[,] //Shoulder_Left
              {
                 {mat_Skel[4,0]},
+                {mat_Skel[4,1]},
                 {mat_Skel[4,2]}
              });
 
             Matrix<double> vector_Left_02 = DenseMatrix.OfArray(new double[,] //Elbow_Left
             {
                 {mat_Skel[5,0] },
+                {mat_Skel[5,1] },
                 {mat_Skel[5,2] }
             });
 
             Matrix<double> vector_Left_03 = DenseMatrix.OfArray(new double[,] //Wrist_Left
             {
                 {mat_Skel[6,0] },
+                {mat_Skel[6,1] },
                 {mat_Skel[6,2] }
             });
 
             Matrix<double> vector_Left_04 = DenseMatrix.OfArray(new double[,] //Thumb_Left
             {
                 {mat_Skel[7,0] },
+                {mat_Skel[7,1] },
                 {mat_Skel[7,2] }
             });
 
             Matrix<double> vector_Right_01 = DenseMatrix.OfArray(new double[,] //Shoulder_Right
             {
                 {mat_Skel[8,0] },
+                {mat_Skel[8,1] },
                 {mat_Skel[8,2] }
             });
 
             Matrix<double> vector_Right_02 = DenseMatrix.OfArray(new double[,] //Elbow_Right
             {
                 {mat_Skel[9,0] },
+                {mat_Skel[9,1] },
                 {mat_Skel[9,2] }
             });
 
             Matrix<double> vector_Right_03 = DenseMatrix.OfArray(new double[,] //Wrist_Right
             {
                 {mat_Skel[10,0] },
+                {mat_Skel[10,1] },
                 {mat_Skel[10,2] }
             });
 
             Matrix<double> vector_Right_04 = DenseMatrix.OfArray(new double[,] //Thumb_Right
             {
                 {mat_Skel[11,0] },
+                {mat_Skel[11,1] },
                 {mat_Skel[11,2] }
             });
 
-            Matrix<double> vector_Neck = DenseMatrix.OfArray(new double[,]{
-                {mat_Skel[1,0] },
-                {mat_Skel[1,2] }
+            Matrix<double> arm_Upper_Left = vector_Left_02-vector_Left_01;
+            Matrix<double> arm_Below_Left= vector_Left_03-vector_Left_02;
+            
+            Matrix<double> arm_Upper_Right = vector_Right_02-vector_Right_01;
+            Matrix<double> arm_Below_Right = vector_Right_03-vector_Right_02;
+
+            double Distance_Upper_Left = Math.Abs((arm_Upper_Left[0,0]*vector_Left_03[0,0])+ (arm_Upper_Left[1, 0] * vector_Left_03[1, 0])+ (arm_Upper_Left[2, 0] * vector_Left_03[2, 0])) /(Math.Sqrt(Math.Pow(arm_Upper_Left[0,0],2)+ Math.Pow(arm_Upper_Left[1, 0], 2) + Math.Pow(arm_Upper_Left[2, 0], 2)));
+            double Distance_Upper_Right = Math.Abs((arm_Upper_Right[0, 0] * vector_Right_03[0, 0]) + (arm_Upper_Right[1, 0] * vector_Right_03[1, 0]) + (arm_Upper_Right[2, 0] * vector_Right_03[2, 0])) / (Math.Sqrt(Math.Pow(arm_Upper_Right[0, 0], 2) + Math.Pow(arm_Upper_Right[1, 0], 2) + Math.Pow(arm_Upper_Right[2, 0], 2)));
+
+            Console.WriteLine(Distance_Upper_Left);
+
+            Matrix<double> vector_Ortho_Arm_Upper_Left=(vector_Left_03-(Distance_Upper_Left*arm_Upper_Left))-vector_Left_02;
+            Matrix<double> vector_Ortho_Arm_Below_Left;
+
+            Console.WriteLine(vector_Ortho_Arm_Upper_Left);
+
+            Matrix<double> vector_Ortho_Arm_Upper_Right= (vector_Right_03 - (Distance_Upper_Right * arm_Upper_Right)) - vector_Right_02;
+            Matrix<double> vector_Ortho_Arm_Below_Right;
+
+            return result = DenseMatrix.OfArray(new double[,]{
+            {((90- Math.Acos(((arm_Upper_Left[0,0] * vector_Ortho_Arm_Upper_Left[0,0]) + (arm_Upper_Left[1,0] * vector_Ortho_Arm_Upper_Left[1,0]) + (arm_Upper_Left[2,0]*vector_Ortho_Arm_Upper_Left[2,0])) / (VectorSize(arm_Upper_Left) * VectorSize(vector_Ortho_Arm_Upper_Left))))*180/Math.PI)},
+            {((90- Math.Acos(((arm_Upper_Right[0,0] * vector_Ortho_Arm_Upper_Right[0,0]) + (arm_Upper_Right[1,0] * vector_Ortho_Arm_Upper_Right[1,0]) + (arm_Upper_Right[2,0]*vector_Ortho_Arm_Upper_Right[2,0])) / (VectorSize(arm_Upper_Right) * VectorSize(vector_Ortho_Arm_Upper_Right))))*180/Math.PI)}
             });
+        }
 
-            Matrix<double> vector_LeftArm_Up = vector_Left_02 - vector_Left_01;
-            Matrix<double> vector_LeftArm_Below = vector_Left_02 - vector_Left_03;
-            vector_LeftArm_Below[0, 0] = vector_LeftArm_Below[0, 0] + (vector_LeftArm_Below[0, 0] - vector_Left_01[0, 0]);
-            vector_LeftArm_Below[1, 0] = vector_LeftArm_Below[1, 0] + (vector_LeftArm_Below[1, 0] - vector_Left_01[1, 0]);
+        public double PlaneFunc(double x, double y, double z, Matrix<double> orthoVector, Matrix<double> initDot)
+        {
+            double result;
 
-            Matrix<double> vector_RightArm_Up = vector_Right_01 - vector_Right_02;
-            Matrix<double> vector_RightArm_Below = vector_Right_02 - vector_Right_03;
-            vector_RightArm_Below[0, 0] = vector_RightArm_Below[0, 0] + (vector_RightArm_Below[0, 0] - vector_Right_01[0, 0]);
-            vector_RightArm_Below[1, 0] = vector_RightArm_Below[1, 0] + (vector_RightArm_Below[1, 0] - vector_Right_01[1, 0]);
-
-            Matrix<double> vector_RightShoulder =  vector_Right_01 - vector_Left_01;
-            Matrix<double> vector_LeftShoulder = vector_Left_01 - vector_Right_01;
-
-            Matrix<double> vector_RightShoulder_Proj = DenseMatrix.OfArray(new double[,]
-            {
-                {vector_RightShoulder[0,0] },
-                {vector_RightShoulder[1,0] }
-            });
-
-            Matrix<double> vector_LeftShoulder_Proj = DenseMatrix.OfArray(new double[,]
-            {
-                {vector_LeftShoulder[0,0] },
-                {vector_LeftShoulder[1,0] }
-            });
-
-            result = DenseMatrix.OfArray(new double[,]{
-            {((Math.Acos(((vector_RightShoulder_Proj[0,0] * vector_RightArm_Below[0,0]) + (vector_RightShoulder_Proj[1,0] * vector_RightArm_Below[1,0]))/ (VectorSize2D(vector_RightShoulder_Proj) * VectorSize2D(vector_RightArm_Below))))*180/Math.PI)-70},
-            {((Math.Acos(((vector_LeftShoulder_Proj[0,0] * vector_LeftArm_Below[0,0]) + (vector_LeftShoulder_Proj[1,0]*vector_LeftArm_Below[1,0])) / (VectorSize2D(vector_LeftShoulder_Proj) * VectorSize2D(vector_LeftArm_Below))))*180/Math.PI)-110}
-            });
-
-            return result;
+            return result = (orthoVector[0,0]*(x - initDot[0, 0]))+ (orthoVector[1, 0] * (y - initDot[1, 0]))+ (orthoVector[2, 0] * (z - initDot[2, 0]));
         }
 
         public double VectorSize(Matrix<double> Vector)

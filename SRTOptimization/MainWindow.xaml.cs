@@ -247,7 +247,7 @@ namespace SRTOptimization
                                     Angle_Set_Elbow = vector_Func.AngleTransform_Elbow(skel_Mat_01);
                                     Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
                                     Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
-                                    Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin1(skel_Mat_01);
+                                    Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin(skel_Mat_01);
 
                                     for (int i = 0; i < 2; i++)
                                     {
