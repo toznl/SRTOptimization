@@ -247,20 +247,19 @@ namespace SRTOptimization.Skel_Data
 
             double Distance_Upper_Left = Math.Abs((arm_Upper_Left[0,0]*vector_Left_03[0,0])+ (arm_Upper_Left[1, 0] * vector_Left_03[1, 0])+ (arm_Upper_Left[2, 0] * vector_Left_03[2, 0])) /(Math.Sqrt(Math.Pow(arm_Upper_Left[0,0],2)+ Math.Pow(arm_Upper_Left[1, 0], 2) + Math.Pow(arm_Upper_Left[2, 0], 2)));
             double Distance_Upper_Right = Math.Abs((arm_Upper_Right[0, 0] * vector_Right_03[0, 0]) + (arm_Upper_Right[1, 0] * vector_Right_03[1, 0]) + (arm_Upper_Right[2, 0] * vector_Right_03[2, 0])) / (Math.Sqrt(Math.Pow(arm_Upper_Right[0, 0], 2) + Math.Pow(arm_Upper_Right[1, 0], 2) + Math.Pow(arm_Upper_Right[2, 0], 2)));
-
-            Console.WriteLine(Distance_Upper_Left);
-
+            
+            //Upper Left Arm Angle
             Matrix<double> vector_Ortho_Arm_Upper_Left=(vector_Left_03-(Distance_Upper_Left*arm_Upper_Left))-vector_Left_02;
-            Matrix<double> vector_Ortho_Arm_Below_Left;
+            //Matrix<double> vector_Ortho_Arm_Below_Left;
 
-            Console.WriteLine(vector_Ortho_Arm_Upper_Left);
-
+            //Upper Right Arm Angle
             Matrix<double> vector_Ortho_Arm_Upper_Right= (vector_Right_03 - (Distance_Upper_Right * arm_Upper_Right)) - vector_Right_02;
-            Matrix<double> vector_Ortho_Arm_Below_Right;
+            //Matrix<double> vector_Ortho_Arm_Below_Right;
+            
 
             return result = DenseMatrix.OfArray(new double[,]{
-            {((90- Math.Acos(((arm_Upper_Left[0,0] * vector_Ortho_Arm_Upper_Left[0,0]) + (arm_Upper_Left[1,0] * vector_Ortho_Arm_Upper_Left[1,0]) + (arm_Upper_Left[2,0]*vector_Ortho_Arm_Upper_Left[2,0])) / (VectorSize(arm_Upper_Left) * VectorSize(vector_Ortho_Arm_Upper_Left))))*180/Math.PI)},
-            {((90- Math.Acos(((arm_Upper_Right[0,0] * vector_Ortho_Arm_Upper_Right[0,0]) + (arm_Upper_Right[1,0] * vector_Ortho_Arm_Upper_Right[1,0]) + (arm_Upper_Right[2,0]*vector_Ortho_Arm_Upper_Right[2,0])) / (VectorSize(arm_Upper_Right) * VectorSize(vector_Ortho_Arm_Upper_Right))))*180/Math.PI)}
+            {-(Math.Atan2(vector_Left_03[0,0]-vector_Left_01[0,0], vector_Left_03[2,0]-vector_Left_01[0,0])*180/Math.PI) },
+            {Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[0,0])*180/Math.PI }
             });
         }
 

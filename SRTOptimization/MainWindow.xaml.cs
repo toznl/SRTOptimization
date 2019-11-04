@@ -283,8 +283,8 @@ namespace SRTOptimization
                                         {
                                             Angle_Set_Elbow[i,0] = 90;
                                         }
-                                        
-                                        Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 5) * 5;
+
+                                        Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 2) * 2;
                                         if (Angle_Set_ElbowSpin[i, 0] < -20)
                                         {
                                             Angle_Set_ElbowSpin[i, 0] = -20;
