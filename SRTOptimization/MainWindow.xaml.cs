@@ -301,17 +301,18 @@ namespace SRTOptimization
                                     //Console.WriteLine(Angle_Set_ArmSide);
                                     //Console.WriteLine(Angle_Set_ArmFrontal);
                                     //Console.WriteLine(Angle_Set_Elbow);
-                                    Console.WriteLine(Angle_Set_ElbowSpin);
 
                                     Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
-                                    Angle_Set_Arm[2, 0] = 0;
+                                    Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0,0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
     
                                     Angle_Set_Arm[4, 0] = Angle_Set_ArmFrontal[1, 0];
                                     Angle_Set_Arm[5, 0] = Angle_Set_ArmSide[1, 0];
-                                    Angle_Set_Arm[6, 0] = 0;
+                                    Angle_Set_Arm[6, 0] = Angle_Set_ElbowSpin[1,0];
                                     Angle_Set_Arm[7, 0] = Angle_Set_Elbow[1, 0];
+
+                                    Console.WriteLine(Angle_Set_Arm);
 
                                     string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[0, 0] + ","+Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[4, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + "," + Angle_Set_Arm[7, 0];
 
