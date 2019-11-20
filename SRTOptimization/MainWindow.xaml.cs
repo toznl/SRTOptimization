@@ -283,47 +283,47 @@ namespace SRTOptimization
                                             Angle_Set_Elbow[i,0] = 90;
                                         }
 
-                                        //Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0])/2)*2;
-                                        //if (Angle_Set_ElbowSpin[i, 0] < -20)
-                                        //{
-                                        //    Angle_Set_ElbowSpin[i, 0] = -20;
-                                        //}
-
-                                        //if (Angle_Set_ElbowSpin[i, 0] > 90)
-                                        //{
-                                        //    Angle_Set_ElbowSpin[i, 0] = 90;
-                                        //}
-                                        Angle_Set_ElbowSpin[i+2, 0] = (double)((int)(Angle_Set_ElbowSpin[i+2, 0]) / 5) * 5;
-                                        if (Angle_Set_ElbowSpin[i+2, 0] < -20)
+                                        Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 2) * 2;
+                                        if (Angle_Set_ElbowSpin[i, 0] < -20)
                                         {
-                                            Angle_Set_ElbowSpin[i+2, 0] = -20;
+                                            Angle_Set_ElbowSpin[i, 0] = -20;
                                         }
 
-                                        if (Angle_Set_ElbowSpin[i+2, 0] > 90)
+                                        if (Angle_Set_ElbowSpin[i, 0] > 70)
                                         {
-                                            Angle_Set_ElbowSpin[i+2, 0] = 90;
+                                            Angle_Set_ElbowSpin[i, 0] = 70;
                                         }
+                                        //Angle_Set_ElbowSpin[i+2, 0] = (double)((int)(Angle_Set_ElbowSpin[i+2, 0]) / 5) * 5;
+                                        //if (Angle_Set_ElbowSpin[i+2, 0] < -20)
+                                        //{
+                                        //    Angle_Set_ElbowSpin[i+2, 0] = -20;
+                                        //}
+
+                                        //if (Angle_Set_ElbowSpin[i+2, 0] > 90)
+                                        //{
+                                        //    Angle_Set_ElbowSpin[i+2, 0] = 90;
+                                        //}
                                     }
 
                                     //Console.WriteLine(Angle_Set_ArmSide);
                                     //Console.WriteLine(Angle_Set_ArmFrontal);
                                     //Console.WriteLine(Angle_Set_Elbow);
 
-                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
+                                    Angle_Set_Arm[0, 0] = Angle_Set_ElbowSpin[2, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0,0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
-                                    //Angle_Set_Arm[4, 0] = Angle_Set_ElbowSpin[2, 0];
 
-                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmFrontal[1, 0];
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ElbowSpin[3, 0];
                                     Angle_Set_Arm[6, 0] = Angle_Set_ArmSide[1, 0];
                                     Angle_Set_Arm[7, 0] = Angle_Set_ElbowSpin[1,0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_Elbow[1, 0];
-                                    //Angle_Set_Arm[9, 0] = Angle_Set_ElbowSpin[3, 0];
 
-                                    Console.WriteLine(Angle_Set_Arm[2,0]);
+                                    Console.WriteLine(Angle_Set_Arm[3,0]);
+                                    Console.WriteLine(Angle_Set_Arm[8, 0]);
+                                    Console.WriteLine("-----------------------");
 
-                                    string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + ","+Angle_Set_Arm[7, 0];
+                                    string data = Angle_Set_Arm[4,0] + ","+ Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + ","+Angle_Set_Arm[7, 0];
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
@@ -515,6 +515,20 @@ namespace SRTOptimization
                                         Canvas.SetTop(drawThumbRight, mat_Y_01[2, 3] - drawThumbRight.Width / 2);
                                         canvas.Children.Add(drawThumbRight);
                                         textCanvas.Text += "ThumbRight : (" + mat_X_01[2, 3].ToString("F3") + "  ,  " + mat_Y_01[2, 3].ToString("F3") + "  ,  " + mat_Z_01[2, 3].ToString("F3") + ")\n";
+                                        textCanvas.Text += "\n";
+                                        textCanvas.Text += "----------------------Angle----------------------\n";
+                                        textCanvas.Text += "[Left]\n";
+                                        textCanvas.Text += "Frontal    : " + Angle_Set_Arm[0, 0] + "\n";
+                                        textCanvas.Text += "Side       : " + Angle_Set_Arm[1, 0] + "\n";
+                                        textCanvas.Text += "Elbow      : " + Angle_Set_Arm[2, 0] + "\n";
+                                        textCanvas.Text += "ElbowSpine : " + Angle_Set_Arm[3, 0] + "\n";
+                                        textCanvas.Text += "\n";
+                                        textCanvas.Text += "[Right]\n";
+                                        textCanvas.Text += "Frontal    : " + Angle_Set_Arm[5, 0] + "\n";
+                                        textCanvas.Text += "Side       : " + Angle_Set_Arm[6, 0] + "\n";
+                                        textCanvas.Text += "Elbow      : " + Angle_Set_Arm[7, 0] + "\n";
+                                        textCanvas.Text += "ElbowSpine : " + Angle_Set_Arm[8, 0] + "\n";
+
 
                                     }));
 
