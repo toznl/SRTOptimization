@@ -256,10 +256,10 @@ namespace SRTOptimization.Skel_Data
             double Distance_Upper_Right = Math.Abs((arm_Upper_Right[0, 0] * vector_Right_03[0, 0]) + (arm_Upper_Right[1, 0] * vector_Right_03[1, 0]) + (arm_Upper_Right[2, 0] * vector_Right_03[2, 0])) / (Math.Sqrt(Math.Pow(arm_Upper_Right[0, 0], 2) + Math.Pow(arm_Upper_Right[1, 0], 2) + Math.Pow(arm_Upper_Right[2, 0], 2))*180/Math.PI);
             
             return result = DenseMatrix.OfArray(new double[,]{
-            {-(Math.Atan2(vector_Left_03[0,0]-vector_Left_01[0,0], vector_Left_03[2,0]-vector_Left_01[2,0]))*180/Math.PI},
-            {Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI},
+            {(Math.Atan2(vector_Left_03[0,0]-vector_Left_01[0,0], vector_Left_03[2,0]-vector_Left_01[2,0]))*180/Math.PI},
+            {150-(Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI)},
             {-(Math.Atan2(vector_Left_02[0,0]-Vector_Neck[0,0], vector_Left_02[2,0]-Vector_Neck[2,0])*360/Math.PI)-300},
-            {Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*360/Math.PI-300   }
+            {Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*360/Math.PI-300}
 
             });
         }
