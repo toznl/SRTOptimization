@@ -64,21 +64,19 @@ namespace SRTOptimization
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
         Streaming.SendAngles sendBuf = new Streaming.SendAngles();
 
-        byte[] buffer;
-
         #region Kinect_Matrix
 
         Matrix<double> mat_X_01;
         Matrix<double> mat_Y_01;
         Matrix<double> mat_Z_01;
 
-        Matrix<double> mat_X_02;
-        Matrix<double> mat_Y_02;
-        Matrix<double> mat_Z_02;
+        //Matrix<double> mat_X_02;
+        //Matrix<double> mat_Y_02;
+        //Matrix<double> mat_Z_02;
 
         Matrix<double> skel_Mat_01;
-        Matrix<double> skel_Mat_02;
-        byte[] skel_Mat_02_byte;
+        //Matrix<double> skel_Mat_02;
+        //byte[] skel_Mat_02_byte;
 
         #endregion
 
@@ -91,7 +89,6 @@ namespace SRTOptimization
             {
                 Environment.Exit(1);
             };
-
         }
 
         private ImageSource ProcessFrame(DepthFrame frame)
@@ -126,7 +123,7 @@ namespace SRTOptimization
             this.sensor.Open();
 
             this.depthReader = this.sensor.DepthFrameSource.OpenReader();
-            this.depthReader.FrameArrived += OnDepthFrameArrived;
+            this.depthReader.FrameArrived += OnDepthFrameArrived;   
 
             this.bodyReader = this.sensor.BodyFrameSource.OpenReader();
             this.bodyReader.FrameArrived += OnBodyFrameArrived;
@@ -182,10 +179,12 @@ namespace SRTOptimization
                 {angle06 },
                 {angle07 },
                 {angle08 },
+                {angle09 },
                 {angle11 },
                 {angle12 },
                 {angle13 },
                 {angle14 },
+                {angle15 }
             });
 
             if (frame != null)
@@ -224,7 +223,7 @@ namespace SRTOptimization
 
                                     mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
                                     mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
-                                    mat_Z_01 = mat_Z_01 * 1000;
+                                    mat_Z_01 *= 1000;
 
                                     skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
                                         {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
@@ -284,19 +283,27 @@ namespace SRTOptimization
                                             Angle_Set_Elbow[i,0] = 90;
                                         }
 
-                                        Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 2) * 2;
-                                        if (Angle_Set_ElbowSpin[i, 0] < -20)
+                                        //Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0])/2)*2;
+                                        //if (Angle_Set_ElbowSpin[i, 0] < -20)
+                                        //{
+                                        //    Angle_Set_ElbowSpin[i, 0] = -20;
+                                        //}
+
+                                        //if (Angle_Set_ElbowSpin[i, 0] > 90)
+                                        //{
+                                        //    Angle_Set_ElbowSpin[i, 0] = 90;
+                                        //}
+                                        Angle_Set_ElbowSpin[i+2, 0] = (double)((int)(Angle_Set_ElbowSpin[i+2, 0]) / 5) * 5;
+                                        if (Angle_Set_ElbowSpin[i+2, 0] < -20)
                                         {
-                                            Angle_Set_ElbowSpin[i, 0] = -20;
+                                            Angle_Set_ElbowSpin[i+2, 0] = -20;
                                         }
 
-                                        if (Angle_Set_ElbowSpin[i, 0] > 90)
+                                        if (Angle_Set_ElbowSpin[i+2, 0] > 90)
                                         {
-                                            Angle_Set_ElbowSpin[i, 0] = 90;
+                                            Angle_Set_ElbowSpin[i+2, 0] = 90;
                                         }
-
                                     }
-
 
                                     //Console.WriteLine(Angle_Set_ArmSide);
                                     //Console.WriteLine(Angle_Set_ArmFrontal);
@@ -306,15 +313,17 @@ namespace SRTOptimization
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0,0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
-    
-                                    Angle_Set_Arm[4, 0] = Angle_Set_ArmFrontal[1, 0];
-                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmSide[1, 0];
-                                    Angle_Set_Arm[6, 0] = Angle_Set_ElbowSpin[1,0];
-                                    Angle_Set_Arm[7, 0] = Angle_Set_Elbow[1, 0];
+                                    //Angle_Set_Arm[4, 0] = Angle_Set_ElbowSpin[2, 0];
 
-                                    Console.WriteLine(Angle_Set_Arm);
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmFrontal[1, 0];
+                                    Angle_Set_Arm[6, 0] = Angle_Set_ArmSide[1, 0];
+                                    Angle_Set_Arm[7, 0] = Angle_Set_ElbowSpin[1,0];
+                                    Angle_Set_Arm[8, 0] = Angle_Set_Elbow[1, 0];
+                                    //Angle_Set_Arm[9, 0] = Angle_Set_ElbowSpin[3, 0];
 
-                                    string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[0, 0] + ","+Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[4, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + "," + Angle_Set_Arm[7, 0];
+                                    Console.WriteLine(Angle_Set_Arm[2,0]);
+
+                                    string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + ","+Angle_Set_Arm[7, 0];
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
@@ -584,6 +593,10 @@ namespace SRTOptimization
             stream.Write(msg, 0, msg.Length);
          }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
     }
 }
 

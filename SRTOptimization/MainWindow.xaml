@@ -14,7 +14,14 @@
             <ColumnDefinition Width="458*"/>
         </Grid.ColumnDefinitions>
         <Image Name="depthCamera" Margin="10,25,45.333,36" Grid.ColumnSpan="2"/>
-        <Canvas Name="canvas" Margin="4.667,25,4.333,141" Grid.Column="2"/>
+        <Canvas Name="canvas" Margin="4.667,25,4.333,141" Grid.Column="2">
+            <Button Name="Device" Content="Device ON" Canvas.Top="490" Width="115" Height="46" Click="Button_Click"/>
+            <Button Name="Angle" Content="Get Angle" Canvas.Top="490" Width="115" Height="46" Canvas.Left="140"/>
+            <Button Name="Socket" Content="Streaming" Canvas.Top="490" Width="115" Height="46" Canvas.Left="280"/>
+            <Button Name="Pause" Content="Device OFF" Canvas.Top="550" Width="115" Height="46"/>
+            <Button Content="!?" Canvas.Top="550" Width="115" Height="46" Canvas.Left="140"/>
+            <Button Name="Dispose" Content="Exit" Canvas.Top="550" Width="115" Height="46" Canvas.Left="280"/>
+        </Canvas>
         <TextBlock Name="textCanvas" HorizontalAlignment="Left" Height="624" Margin="9.667,12,0,0" TextWrapping="Wrap" Text="Loading..." Foreground="White" VerticalAlignment="Top" Width="438" Grid.Column="3"/>
     </Grid>
 </Window>

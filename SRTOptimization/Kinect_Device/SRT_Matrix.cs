@@ -128,7 +128,7 @@ namespace SRTOptimization.Kinect_Device
             {
                 {body.Joints[JointType.Head].Position.Z, body.Joints[JointType.Neck].Position.Z, body.Joints[JointType.SpineMid].Position.Z, body.Joints[JointType.SpineBase].Position.Z},
                 {body.Joints[JointType.ShoulderLeft].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristLeft].Position.Z, body.Joints[JointType.ThumbLeft].Position.Z},
-                {body.Joints[JointType.ShoulderRight].Position.Z, body.Joints[JointType.ElbowLeft].Position.Z,body.Joints[JointType.WristRight].Position.Z, body.Joints[JointType.ThumbRight].Position.Z},
+                {body.Joints[JointType.ShoulderRight].Position.Z, body.Joints[JointType.ElbowRight].Position.Z,body.Joints[JointType.WristRight].Position.Z, body.Joints[JointType.ThumbRight].Position.Z},
         });
             return body_Z;
         }

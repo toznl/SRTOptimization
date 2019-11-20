@@ -11,10 +11,10 @@ namespace SRTOptimization.Skel_Data
 {
     public class Convert_2D23D
     {
-        static double fx = 367.286994337726;
-        static double fy = 367.286855347968;
-        static double cx = 255.165695200749;
-        static double cy = 211.824600345805;
+        static readonly double fx = 366.435;
+        static readonly double fy = 366.435;
+        static readonly double cx = 259.478;
+        static readonly double cy = 203.774;
 
         public Convert_2D23D()
         {
@@ -25,7 +25,7 @@ namespace SRTOptimization.Skel_Data
         {
             Matrix<double> result;
 
-            result = ((mat_X * fx)+(cx*mat_Z));
+            result = (mat_X * fx)+(cx*mat_Z);
 
             for(int i = 0; i < 3; i++)
             {
