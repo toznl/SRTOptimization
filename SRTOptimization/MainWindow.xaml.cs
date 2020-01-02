@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
@@ -61,6 +62,9 @@ namespace SRTOptimization
         public double angle16 = 0;
         public double angle17 = 0;
 
+        public StreamWriter outputFile;
+        public int time_stamp_kinect=0;
+
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
         Streaming.SendAngles sendBuf = new Streaming.SendAngles();
 
@@ -95,6 +99,7 @@ namespace SRTOptimization
         {
             int width = frame.FrameDescription.Width;
             int height = frame.FrameDescription.Height;
+            
             PixelFormat format = PixelFormats.Bgr32;
             ushort minDepth = frame.DepthMinReliableDistance;
             ushort maxDepth = frame.DepthMaxReliableDistance;
@@ -323,8 +328,8 @@ namespace SRTOptimization
                                     Console.WriteLine(Angle_Set_Arm[8, 0]);
                                     Console.WriteLine("-----------------------");
 
-                                    string data = Angle_Set_Arm[0,0] + ","+ Angle_Set_Arm[1, 0] + ","+Angle_Set_Arm[2, 0] + ","+Angle_Set_Arm[3, 0] + ","+Angle_Set_Arm[5, 0] + ","+Angle_Set_Arm[6, 0] + ","+Angle_Set_Arm[7, 0]+","+ "," + Angle_Set_Arm[8, 0];
-
+                                    // string data = Angle_Set_Arm[0,0] +  "	" + Angle_Set_Arm[1, 0] +  "	" +Angle_Set_Arm[2, 0] +  "	" +Angle_Set_Arm[3, 0] +  "	" +Angle_Set_Arm[5, 0] +  "	" +Angle_Set_Arm[6, 0] +  "	" +Angle_Set_Arm[7, 0]+ "	"  + Angle_Set_Arm[8, 0];
+                                    string data = 10 +  "	" + 20 +  "	" +30 +  "	" +40 +  "	" +50 +  "	" +60 +  "	" +70+ "	"  + 80;
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
@@ -533,9 +538,18 @@ namespace SRTOptimization
                                     }));
 
                                     #endregion
+                                    DateTime timer = DateTime.Now;
+                                    
 
-                                    //SendAngleto EveR
-                                    sending(data);
+                                    //All Angles Save as file line by line
+                                    outputFile = new StreamWriter(@"..\data.txt",true);
+                                    if (time_stamp_kinect == 0)
+                                    {
+                                        outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
+                                    }
+                                    outputFile.WriteLine(time_stamp_kinect + "	" +0+ "	" + data);
+                                    time_stamp_kinect+=1;
+                                    outputFile.Close();
                                 }
 
                             }
