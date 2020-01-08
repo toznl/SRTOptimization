@@ -329,7 +329,7 @@ namespace SRTOptimization
                                     Console.WriteLine("-----------------------");
 
                                     // string data = Angle_Set_Arm[0,0] +  "	" + Angle_Set_Arm[1, 0] +  "	" +Angle_Set_Arm[2, 0] +  "	" +Angle_Set_Arm[3, 0] +  "	" +Angle_Set_Arm[5, 0] +  "	" +Angle_Set_Arm[6, 0] +  "	" +Angle_Set_Arm[7, 0]+ "	"  + Angle_Set_Arm[8, 0];
-                                    string data = 10 +  "	" + 20 +  "	" +30 +  "	" +40 +  "	" +50 +  "	" +60 +  "	" +70+ "	"  + 80;
+                                    string data =  Angle_Set_Arm[0,0] +  "	" + Angle_Set_Arm[1,0] +  "	" + Angle_Set_Arm[2,0] +  "	" + Angle_Set_Arm[3,0] +  "	" + Angle_Set_Arm[4,0] +  "	" + Angle_Set_Arm[5,0] +  "	" + Angle_Set_Arm[6,0] + "	"  + Angle_Set_Arm[7,0];
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
