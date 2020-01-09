@@ -50,7 +50,7 @@ namespace SRTOptimization.Skel_Data
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        mat_Y[i, j] = mat_Y[i, j] / mat_Z[i, j];
+                        mat_Y[i, j] = mat_Y[i, j]/ mat_Z[i, j];
                     }
                 }
 

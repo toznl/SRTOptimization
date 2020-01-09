@@ -64,7 +64,7 @@ namespace SRTOptimization.Skel_Data
             right_Arm[1, 0] = right_Arm[1, 0] + (right_Arm[1, 0] - spine[1, 0]);
 
             return result = DenseMatrix.OfArray(new double[,]{
-            {( Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI},
+            {(Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI},
             {(Math.Acos(((spine[0,0] * right_Arm[0,0]) + (spine[1,0]*right_Arm[1,0])) / (VectorSize2D(spine) * VectorSize2D(right_Arm))))*180/Math.PI}
             });
         }
@@ -117,8 +117,8 @@ namespace SRTOptimization.Skel_Data
             right_Arm[1, 0] = right_Arm[1, 0] + (right_Arm[1, 0] - spine[1, 0]);
 
             return result = DenseMatrix.OfArray(new double[,]{
-            {( Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI-30},
-            {(Math.Acos(((spine[0,0] * right_Arm[0,0]) + (spine[1,0]*right_Arm[1,0])) / (VectorSize2D(spine) * VectorSize2D(right_Arm))))*180/Math.PI-30}
+            {(Math.Acos(((spine[0,0] * left_Arm[0,0]) + (spine[1,0] * left_Arm[1,0]))/ (VectorSize2D(spine) * VectorSize2D(left_Arm))))*180/Math.PI},
+            {(Math.Acos(((spine[0,0] * right_Arm[0,0]) + (spine[1,0]*right_Arm[1,0])) / (VectorSize2D(spine) * VectorSize2D(right_Arm))))*180/Math.PI}
             });
         }
         public Matrix<double> AngleTransform_Elbow(Matrix<double> mat_Skel) //Elbow
@@ -257,9 +257,9 @@ namespace SRTOptimization.Skel_Data
             
             return result = DenseMatrix.OfArray(new double[,]{
             {(Math.Atan2(vector_Left_03[0,0]-vector_Left_01[0,0], vector_Left_03[2,0]-vector_Left_01[2,0]))*180/Math.PI},
-            {150-(Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI)},
-            {-(Math.Atan2(vector_Left_02[0,0]-Vector_Neck[0,0], vector_Left_02[2,0]-Vector_Neck[2,0])*360/Math.PI)-300},
-            {Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*360/Math.PI-300}
+            {(Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI)},
+            {(Math.Atan2(vector_Left_02[0,0]-Vector_Neck[0,0], vector_Left_02[2,0]-Vector_Neck[2,0])*180/Math.PI)},
+            {(Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*180/Math.PI)}
 
             });
         }
