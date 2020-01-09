@@ -318,18 +318,18 @@ namespace SRTOptimization
                                     Angle_Set_Arm[0, 0] = Angle_Set_ElbowSpin[2, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0, 0];
-                                    Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0]; 
+                                    Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
 
                                     Angle_Set_Arm[5, 0] = Angle_Set_ElbowSpin[3, 0];
                                     Angle_Set_Arm[6, 0] = Angle_Set_ArmSide[1, 0];
                                     Angle_Set_Arm[7, 0] = Angle_Set_ElbowSpin[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_Elbow[1, 0];
 
-                                    Console.WriteLine(Angle_Set_Arm[3,0]);
+                                    Console.WriteLine(Angle_Set_Arm[3, 0]);
                                     Console.WriteLine(Angle_Set_Arm[8, 0]);
                                     Console.WriteLine("-----------------------");
 
-                                    string data =  Angle_Set_Arm[0,0] +  "	" + Angle_Set_Arm[1,0] +  "	" + Angle_Set_Arm[2,0] +  "	" + Angle_Set_Arm[3,0] +  "	" + Angle_Set_Arm[4,0] +  "	" + Angle_Set_Arm[5,0] +  "	" + Angle_Set_Arm[6,0] + "	"  + Angle_Set_Arm[7,0];
+                                    string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[4, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0];
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
@@ -539,21 +539,27 @@ namespace SRTOptimization
 
                                     #endregion
                                     DateTime timer = DateTime.Now;
-                                    string timeStamp = timer.ToString("hh:mm:ss fff");
+                                    
+                                    
 
                                     //All Angles Save as file line by line
-                                    outputFile = new StreamWriter(@"..\data.txt",true);
+                                    outputFile = new StreamWriter(@"..\data.txt", true);
                                     if (time_stamp_kinect == 0)
                                     {
                                         outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
+                                        string timeStart = timer.ToString("hh:mm:ss fff");
                                         time_stamp_kinect += 1;
                                     }
+                                    else
+                                    {
+                                        string timeStamp = timer.ToString("hh:mm:ss fff");
+                                        outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
+                                    }
 
-                                    outputFile_XYZ = new StreamWriter(@"..\xyzData.txt", true);
+                                    //outputFile_XYZ = new StreamWriter(@"..\xyzData.txt", true);
 
 
-                                    
-                                    outputFile.WriteLine(timeStamp + "	" +0+ "	" + data);
+                                    //outputFile_XYZ.WriteLine(timeStamp + "	" + "({0},{1},{2})"+);
                                     outputFile.Close();
                                 }
 
