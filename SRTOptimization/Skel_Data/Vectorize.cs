@@ -69,8 +69,8 @@ namespace SRTOptimization.Skel_Data
             });
 
             return result = DenseMatrix.OfArray(new double[,]{
-           {(-(Math.Atan2(vector_Left_02[0,0]-Vector_Neck[0,0], vector_Left_02[2,0]-Vector_Neck[2,0])*360/Math.PI)-270)},
-            {(Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*360/Math.PI-250)}
+           {((Math.Atan2(vector_Left_02[0,0]-Vector_Neck[0,0], vector_Left_02[2,0]-Vector_Neck[2,0])*180/Math.PI))},
+            {(Math.Atan2(vector_Right_02[0,0]-Vector_Neck[0,0], vector_Right_02[2,0]-Vector_Neck[2,0])*180/Math.PI)}
             });
         }
         public Matrix<double> AngleTransform_ArmSide(Matrix<double> mat_Skel) //Arm Angle 양옆 위아래
@@ -112,8 +112,8 @@ namespace SRTOptimization.Skel_Data
             Matrix<double> right_Arm_Below = vector_Right_02 - vector_Right_01;
 
             return result = DenseMatrix.OfArray(new double[,]{
-            {((Math.Acos(((left_Arm_Mid[0,0] * left_Arm_Below[0,0]) + (left_Arm_Mid[1,0] * left_Arm_Below[1,0])) / (VectorSize2D(left_Arm_Mid) * VectorSize2D(left_Arm_Below))))*360/Math.PI)-270},
-            {((Math.Acos(((right_Arm_Mid[0,0] * right_Arm_Below[0,0]) + (right_Arm_Mid[1,0] * right_Arm_Below[1,0])) / (VectorSize2D(right_Arm_Mid) * VectorSize2D(right_Arm_Below))))*360/Math.PI)-270}
+            {((Math.Acos(((left_Arm_Mid[0,0] * left_Arm_Below[0,0]) + (left_Arm_Mid[1,0] * left_Arm_Below[1,0])) / (VectorSize2D(left_Arm_Mid) * VectorSize2D(left_Arm_Below))))*180/Math.PI)},
+            {((Math.Acos(((right_Arm_Mid[0,0] * right_Arm_Below[0,0]) + (right_Arm_Mid[1,0] * right_Arm_Below[1,0])) / (VectorSize2D(right_Arm_Mid) * VectorSize2D(right_Arm_Below))))*180/Math.PI)}
             });
         }
         public Matrix<double> AngleTransform_Elbow(Matrix<double> mat_Skel) //Elbow
@@ -169,8 +169,8 @@ namespace SRTOptimization.Skel_Data
             Matrix<double> vector_RightArm_Below = vector_Right_03 - vector_Right_02;
 
             return result = DenseMatrix.OfArray(new double[,]{
-            {180-((Math.Acos(((vector_LeftArm_Up[0,0] * vector_LeftArm_Below[0,0]) + (vector_LeftArm_Up[1,0] * vector_LeftArm_Below[1,0]) + (vector_LeftArm_Up[2,0]*vector_LeftArm_Below[2,0])) / (VectorSize(vector_LeftArm_Up) * VectorSize(vector_LeftArm_Below))))*180/Math.PI)},
-            {180-((Math.Acos(((vector_RightArm_Up[0,0] * vector_RightArm_Below[0,0]) + (vector_RightArm_Up[1,0] * vector_RightArm_Below[1,0]) + (vector_RightArm_Up[2,0]*vector_RightArm_Below[2,0])) / (VectorSize(vector_RightArm_Up) * VectorSize(vector_RightArm_Below))))*180/Math.PI)}
+            {((Math.Acos(((vector_LeftArm_Up[0,0] * vector_LeftArm_Below[0,0]) + (vector_LeftArm_Up[1,0] * vector_LeftArm_Below[1,0]) + (vector_LeftArm_Up[2,0]*vector_LeftArm_Below[2,0])) / (VectorSize(vector_LeftArm_Up) * VectorSize(vector_LeftArm_Below))))*180/Math.PI)},
+            {((Math.Acos(((vector_RightArm_Up[0,0] * vector_RightArm_Below[0,0]) + (vector_RightArm_Up[1,0] * vector_RightArm_Below[1,0]) + (vector_RightArm_Up[2,0]*vector_RightArm_Below[2,0])) / (VectorSize(vector_RightArm_Up) * VectorSize(vector_RightArm_Below))))*180/Math.PI)}
             });
         }
         public Matrix<double> AngleTransform_ArmSpin(Matrix<double> mat_Skel)//Arm Angle 회전
@@ -228,7 +228,7 @@ namespace SRTOptimization.Skel_Data
 
             return result = DenseMatrix.OfArray(new double[,]{
             {(Math.Atan2(vector_Left_03[0,0]-vector_Left_01[0,0], vector_Left_03[2,0]-vector_Left_01[2,0]))*180/Math.PI},
-            {145-(Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI)}
+            {(Math.Atan2(vector_Right_03[0,0]-vector_Right_01[0,0], vector_Right_03[2,0]-vector_Right_01[2,0])*180/Math.PI)}
             });
         }
         public double VectorSize(Matrix<double> Vector)

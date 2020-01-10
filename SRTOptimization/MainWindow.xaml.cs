@@ -257,7 +257,6 @@ namespace SRTOptimization
                                     //for (int i = 0; i < 2; i++)
                                     //{
                                     //    Angle_Set_ArmSide[i, 0] = (double)((int)(Angle_Set_ArmSide[i, 0] * 0.8) / 5) * 5;
-                                    //    Angle_Set_ElbowSpin[i + 2, 0] = (double)((int)(Angle_Set_ElbowSpin[i + 2, 0]) / 5) * 5;
                                     //    Angle_Set_ArmFrontal[i, 0] = (double)((int)(Angle_Set_ArmFrontal[i, 0] * 0.8) / 5) * 5;
                                     //    Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]) / 5) * 5;
                                     //    Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 2) * 2;
@@ -272,7 +271,7 @@ namespace SRTOptimization
                                     //    //    Angle_Set_ArmSide[i, 0] = 90;
                                     //    //}
 
-                                        
+
                                     //    //if (Angle_Set_ArmFrontal[i, 0] < 0)
                                     //    //{
                                     //    //    Angle_Set_ArmFrontal[i, 0] = 0;
@@ -283,7 +282,7 @@ namespace SRTOptimization
                                     //    //    Angle_Set_ArmFrontal[i, 0] = 90;
                                     //    //}
 
-                                        
+
                                     //    //if (Angle_Set_Elbow[i, 0] < 0)
                                     //    //{
                                     //    //    Angle_Set_Elbow[i, 0] = 0;
@@ -294,7 +293,7 @@ namespace SRTOptimization
                                     //    //    Angle_Set_Elbow[i, 0] = 80;
                                     //    //}
 
-                                        
+
                                     //    //if (Angle_Set_ElbowSpin[i, 0] < -30)
                                     //    //{
                                     //    //    Angle_Set_ElbowSpin[i, 0] = -30;
@@ -304,28 +303,20 @@ namespace SRTOptimization
                                     //    //{
                                     //    //    Angle_Set_ElbowSpin[i, 0] = 50;
                                     //    //}
-                                        
-                                    //    //if (Angle_Set_ElbowSpin[i + 2, 0] < -10)
-                                    //    //{
-                                    //    //    Angle_Set_ElbowSpin[i + 2, 0] = -10;
-                                    //    //}
 
-                                    //    //if (Angle_Set_ElbowSpin[i + 2, 0] > 90)
-                                    //    //{
-                                    //    //    Angle_Set_ElbowSpin[i + 2, 0] = 90;
-                                    //    //}
+                                     
                                     //}
 
                                     //Console.WriteLine(Angle_Set_ArmSide);
                                     //Console.WriteLine(Angle_Set_ArmFrontal);
                                     //Console.WriteLine(Angle_Set_Elbow);
 
-                                    Angle_Set_Arm[0, 0] = Angle_Set_ElbowSpin[2, 0];
+                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmSide[0, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0, 0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
 
-                                    Angle_Set_Arm[5, 0] = Angle_Set_ElbowSpin[3, 0];
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmFrontal[1, 0];
                                     Angle_Set_Arm[6, 0] = Angle_Set_ArmSide[1, 0];
                                     Angle_Set_Arm[7, 0] = Angle_Set_ElbowSpin[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_Elbow[1, 0];
@@ -545,28 +536,27 @@ namespace SRTOptimization
 
                                     #endregion
                                     DateTime timer = DateTime.Now;
-                                    
-                                    
+
+
 
                                     //All Angles Save as file line by line
-                                    //outputFile = new StreamWriter(@"..\data.txt", true);
-                                    //if (time_stamp_kinect == 0)
-                                    //{
-                                    //    outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
-                                    //    string timeStart = timer.ToString("hh:mm:ss fff");
-                                    //    time_stamp_kinect += 1;
-                                    //}
-                                    //else
-                                    //{
-                                    //    string timeStamp = timer.ToString("hh:mm:ss fff");
-                                    //    outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
-                                    //}
+                                    outputFile = new StreamWriter(@"..\data.txt", true);
+                                    if (time_stamp_kinect == 0)
+                                    {
+                                        outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
+                                        string timeStart = timer.ToString("hh:mm:ss fff");
+                                        time_stamp_kinect += 1;
+                                    }
+                                    else
+                                    {
+                                        string timeStamp = timer.ToString("hh:mm:ss fff");
+                                        outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
+                                    }
 
                                     //outputFile_XYZ = new StreamWriter(@"..\xyzData.txt", true);
-
-
                                     //outputFile_XYZ.WriteLine(timeStamp + "	" + "({0},{1},{2})"+);
-                                    //outputFile.Close();
+
+                                    outputFile.Close();
                                 }
 
                             }
