@@ -64,7 +64,7 @@ namespace SRTOptimization
 
         public StreamWriter outputFile;
         public StreamWriter outputFile_XYZ;
-        public int time_stamp_kinect=0;
+        public int time_stamp_kinect = 0;
 
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
         Streaming.SendAngles sendBuf = new Streaming.SendAngles();
@@ -100,7 +100,7 @@ namespace SRTOptimization
         {
             int width = frame.FrameDescription.Width;
             int height = frame.FrameDescription.Height;
-            
+
             PixelFormat format = PixelFormats.Bgr32;
             ushort minDepth = frame.DepthMinReliableDistance;
             ushort maxDepth = frame.DepthMaxReliableDistance;
@@ -129,7 +129,7 @@ namespace SRTOptimization
             this.sensor.Open();
 
             this.depthReader = this.sensor.DepthFrameSource.OpenReader();
-            this.depthReader.FrameArrived += OnDepthFrameArrived;   
+            this.depthReader.FrameArrived += OnDepthFrameArrived;
 
             this.bodyReader = this.sensor.BodyFrameSource.OpenReader();
             this.bodyReader.FrameArrived += OnBodyFrameArrived;
@@ -147,7 +147,7 @@ namespace SRTOptimization
         }
         //release Kinect v2 Sensor
         void ReleaseSensor()
-        {   
+        {
             this.sensor.Close();
             this.sensor = null;
         }
@@ -163,21 +163,17 @@ namespace SRTOptimization
         void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             var frame = e.FrameReference.AcquireFrame();
-            Matrix<double> Angle_Set_Elbow = DenseMatrix.OfArray(new double[,]{
-            {angle01},
-            {angle02},
-            });
-            Matrix<double> Angle_Set_ArmSide = DenseMatrix.OfArray(new double[,]{
-            {angle03},
-            {angle04},
-            });
-            Matrix<double> Angle_Set_ArmFrontal = DenseMatrix.OfArray(new double[,]{
+            Matrix<double> Angle_Set_ArmUpper = DenseMatrix.OfArray(new double[,]{
             {angle05},
             {angle06},
+            {angle11 },
+            {angle12 }
             });
-            Matrix<double> Angle_Set_ElbowSpin = DenseMatrix.OfArray(new double[,] {
+            Matrix<double> Angle_Set_ArmBelow = DenseMatrix.OfArray(new double[,] {
                 {angle07 },
-                {angle08 }
+                {angle08 },
+                {angle13 },
+                {angle14 }
             });
             Matrix<double> Angle_Set_Arm = DenseMatrix.OfArray(new double[,]
             {
@@ -254,11 +250,10 @@ namespace SRTOptimization
                                     //Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
                                     //Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin(skel_Mat_01);
 
-                                    Angle_Set_ArmFrontal = vector_Func.AngleTransform_Arm(skel_Mat_01);
-                                    Angle_Set_Elbow = vector_Func.AngleTransform_Elbow(skel_Mat_01);
-                                    Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin(skel_Mat_01);
+                                    Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
+                                    Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
 
-                                    
+
 
 
                                     //for (int i = 0; i < 2; i++)
@@ -322,15 +317,15 @@ namespace SRTOptimization
                                     //Console.WriteLine(Angle_Set_ArmFrontal);
                                     //Console.WriteLine(Angle_Set_Elbow);
 
-                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmFrontal[0, 0];
-                                    Angle_Set_Arm[1, 0] = Angle_Set_ArmFrontal[2, 0];
-                                    Angle_Set_Arm[2, 0] = Angle_Set_ElbowSpin[0, 0];
-                                    Angle_Set_Arm[3, 0] = Angle_Set_Elbow[0, 0];
+                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0,0];
+                                    Angle_Set_Arm[1, 0] = Angle_Set_ArmUpper[2, 0];
+                                    Angle_Set_Arm[2, 0] = Angle_Set_ArmBelow[0, 0];
+                                    Angle_Set_Arm[3, 0] = Angle_Set_ArmBelow[2, 0];
 
-                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmFrontal[1, 0];
-                                    Angle_Set_Arm[6, 0] = Angle_Set_ArmFrontal[3, 0];
-                                    Angle_Set_Arm[7, 0] = Angle_Set_ElbowSpin[1, 0];
-                                    Angle_Set_Arm[8, 0] = Angle_Set_Elbow[1, 0];
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmUpper[1,0];
+                                    Angle_Set_Arm[6, 0] = Angle_Set_ArmUpper[3, 0];
+                                    Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0]; 
+                                    Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
 
                                     string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[4, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0];
                                     #region DrawSkeleton_01
@@ -542,8 +537,6 @@ namespace SRTOptimization
 
                                     #endregion
                                     DateTime timer = DateTime.Now;
-                                    
-                                    
 
                                     //All Angles Save as file line by line
                                     outputFile = new StreamWriter(@"..\data.txt", true);
@@ -558,11 +551,6 @@ namespace SRTOptimization
                                         string timeStamp = timer.ToString("hh:mm:ss fff");
                                         outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
                                     }
-
-                                    //outputFile_XYZ = new StreamWriter(@"..\xyzData.txt", true);
-
-
-                                    //outputFile_XYZ.WriteLine(timeStamp + "	" + "({0},{1},{2})"+);
                                     outputFile.Close();
                                 }
 
@@ -575,11 +563,9 @@ namespace SRTOptimization
 
                         }
                     }
-                    
+
                 }
             }
-
-
         }
         void OnDepthFrameArrived(object sender, DepthFrameArrivedEventArgs e)
         {
@@ -633,11 +619,10 @@ namespace SRTOptimization
             Buffer.BlockCopy(buff, 0, msg, check_sum.Length, buff.Length);
 
             stream.Write(msg, 0, msg.Length);
-         }
-
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
+
         }
     }
 }
