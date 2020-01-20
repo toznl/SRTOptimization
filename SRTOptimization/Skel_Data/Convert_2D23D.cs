@@ -29,7 +29,7 @@ namespace SRTOptimization.Skel_Data
             for(int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 4; j++){
-                    mat_X[i,j]=mat_X[i, j] / mat_Z[i, j];
+                    mat_X[i,j]=mat_X[i, j]*fx / mat_Z[i, j]+cx;
                 }
             }
 
@@ -46,7 +46,7 @@ namespace SRTOptimization.Skel_Data
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        mat_Y[i, j] = mat_Y[i, j]/ mat_Z[i, j];
+                        mat_Y[i, j] = mat_Y[i, j]*fy/ mat_Z[i, j]+cy;
                     }
                 }
             

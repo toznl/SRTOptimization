@@ -87,7 +87,6 @@ namespace SRTOptimization
 
         public MainWindow()
         {
-            AllocConsole();
             InitializeComponent();
             this.Loaded += OnLoaded;
             this.Closing += delegate
@@ -96,6 +95,7 @@ namespace SRTOptimization
             };
         }
 
+        #region Kinect V2
         private ImageSource ProcessFrame(DepthFrame frame)
         {
             int width = frame.FrameDescription.Width;
@@ -151,15 +151,7 @@ namespace SRTOptimization
             this.sensor.Close();
             this.sensor = null;
         }
-
-        #region ConsoleWindows
-        //For using console windows
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
         #endregion
-
         void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             var frame = e.FrameReference.AcquireFrame();
@@ -197,7 +189,6 @@ namespace SRTOptimization
                 bodies = new Body[frame.BodyFrameSource.BodyCount];
                 frame.GetAndRefreshBodyData(bodies);
                 ulong TrackedOnly = 0;
-
                 foreach (var body in bodies)
                 {
                     if (bodies != null) 
@@ -245,7 +236,6 @@ namespace SRTOptimization
                                          });
 
                                     Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
-                                    Skel_Data.LAM LAM = new Skel_Data.LAM();
 
                                     Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
                                     Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
@@ -528,7 +518,7 @@ namespace SRTOptimization
                                     #endregion
                                     DateTime timer = DateTime.Now;
 
-                                    //All Angles Save as file line by line
+                                    # region All Angles Save as file line by line
                                     outputFile = new StreamWriter(@"..\data.txt", true);
                                     if (time_stamp_kinect == 0)
                                     {
@@ -542,11 +532,12 @@ namespace SRTOptimization
                                         outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
                                     }
                                     outputFile.Close();
-
+                                    #endregion
+                                    #region X,Y,Z FileMaker
                                     outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
                                     if (time_stamp_kinect == 0)
                                     {
-                                        outputFile.WriteLine("shoulder_mid	shoulder_left	elbow_left	wrist_left	shoulder_right	elbow_right	wrist_right");
+                                        outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
                                         string timeStart = timer.ToString("hh:mm:ss fff");
                                         time_stamp_kinect += 1;
                                     }
@@ -554,24 +545,19 @@ namespace SRTOptimization
                                     else
                                     {
                                         string timeStamp = timer.ToString("hh:mm:ss fff");
-                                        outputFile_XYZ.WriteLine(timeStamp+ "	"+"({0},{1},{2})" + "	" + "({3},{4},{5})" + "	" + "({6},{7},{8})" + "	" + "({9},{10},{11})" + "	" + "({12},{13},{14})" + "	" + "({15},{16},{17})" + "	" + "({18},{19},{20})");
+                                        outputFile_XYZ.WriteLine(timeStamp+ "	"+"{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1,0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
                                     }
-                                    
-
-
                                     outputFile_XYZ.Close();
+                                    #endregion
                                 }
-
                             }
-
+                            
                             catch (NullReferenceException ex)
                             {
                                 Console.WriteLine(ex.ToString());
                             }
-
                         }
                     }
-
                 }
             }
         }
