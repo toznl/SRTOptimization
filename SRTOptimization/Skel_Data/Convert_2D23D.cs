@@ -20,12 +20,11 @@ namespace SRTOptimization.Skel_Data
         {
 
         }
-
         public Matrix<double> ConvertX(Matrix<double> mat_X, Matrix<double> mat_Z)
         {
             Matrix<double> result;
 
-            result = (mat_X * fx)+(cx*mat_Z);
+            //result = (mat_X * fx)+(cx*mat_Z);
 
             for(int i = 0; i < 3; i++)
             {
@@ -38,14 +37,11 @@ namespace SRTOptimization.Skel_Data
 
             return result;
         }
-
-        public Matrix<double> ConvertY(Matrix<double> mat_Y, Matrix<double> mat_Z)
+        public Matrix<double> ConvertY(Matrix<double> mat_Y, Matrix<double> mat_Z)  
         {
             Matrix<double> result;
 
-            result = ((mat_Y * fy) + (cy * mat_Z));
-            try
-            {
+            //result = ((mat_Y * fy) + (cy * mat_Z));
                 for (int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 4; j++)
@@ -53,18 +49,10 @@ namespace SRTOptimization.Skel_Data
                         mat_Y[i, j] = mat_Y[i, j]/ mat_Z[i, j];
                     }
                 }
-
+            
                 result = mat_Y;
 
                 return result;
-            }
-
-            catch(Exception e)
-            {
-                
-                Console.WriteLine(e.ToString());
-                return result;
-            }
             
         }
     }

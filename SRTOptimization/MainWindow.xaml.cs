@@ -163,12 +163,14 @@ namespace SRTOptimization
         void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             var frame = e.FrameReference.AcquireFrame();
+            
             Matrix<double> Angle_Set_ArmUpper = DenseMatrix.OfArray(new double[,]{
-            {angle05},
-            {angle06},
-            {angle11 },
-            {angle12 }
+                {angle05 },
+                {angle06 },
+                {angle11 },
+                {angle12 }
             });
+
             Matrix<double> Angle_Set_ArmBelow = DenseMatrix.OfArray(new double[,] {
                 {angle07 },
                 {angle08 },
@@ -198,7 +200,7 @@ namespace SRTOptimization
 
                 foreach (var body in bodies)
                 {
-                    if (bodies != null)
+                    if (bodies != null) 
                     {
                         if (body.IsTracked)
                         {
@@ -225,7 +227,7 @@ namespace SRTOptimization
 
                                     mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
                                     mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
-                                    mat_Z_01 *= 1000;
+                                    mat_Z_01 *= 10000;
 
                                     skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
                                         {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
@@ -245,16 +247,8 @@ namespace SRTOptimization
                                     Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
                                     Skel_Data.LAM LAM = new Skel_Data.LAM();
 
-                                    //Angle_Set_Elbow = vector_Func.AngleTransform_Elbow(skel_Mat_01);
-                                    //Angle_Set_ArmSide = vector_Func.AngleTransform_ArmSide(skel_Mat_01);
-                                    //Angle_Set_ArmFrontal = vector_Func.AngleTransform_ArmFrontal(skel_Mat_01);
-                                    //Angle_Set_ElbowSpin = vector_Func.AngleTransform_ArmSpin(skel_Mat_01);
-
                                     Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
                                     Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
-
-
-
 
                                     //for (int i = 0; i < 2; i++)
                                     //{
@@ -313,21 +307,17 @@ namespace SRTOptimization
                                     //    }
                                     //}
 
-                                    //Console.WriteLine(Angle_Set_ArmSide);
-                                    //Console.WriteLine(Angle_Set_ArmFrontal);
-                                    //Console.WriteLine(Angle_Set_Elbow);
-
-                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0,0];
+                                    Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmUpper[2, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ArmBelow[0, 0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_ArmBelow[2, 0];
 
-                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmUpper[1,0];
+                                    Angle_Set_Arm[5, 0] = Angle_Set_ArmUpper[1, 0];
                                     Angle_Set_Arm[6, 0] = Angle_Set_ArmUpper[3, 0];
-                                    Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0]; 
+                                    Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
 
-                                    string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[4, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0];
+                                    string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
@@ -552,6 +542,24 @@ namespace SRTOptimization
                                         outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
                                     }
                                     outputFile.Close();
+
+                                    outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
+                                    if (time_stamp_kinect == 0)
+                                    {
+                                        outputFile.WriteLine("shoulder_mid	shoulder_left	elbow_left	wrist_left	shoulder_right	elbow_right	wrist_right");
+                                        string timeStart = timer.ToString("hh:mm:ss fff");
+                                        time_stamp_kinect += 1;
+                                    }
+
+                                    else
+                                    {
+                                        string timeStamp = timer.ToString("hh:mm:ss fff");
+                                        outputFile_XYZ.WriteLine(timeStamp+ "	"+"({0},{1},{2})" + "	" + "({3},{4},{5})" + "	" + "({6},{7},{8})" + "	" + "({9},{10},{11})" + "	" + "({12},{13},{14})" + "	" + "({15},{16},{17})" + "	" + "({18},{19},{20})");
+                                    }
+                                    
+
+
+                                    outputFile_XYZ.Close();
                                 }
 
                             }

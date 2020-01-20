@@ -110,7 +110,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Skel_Data\Calibration.cs" />
     <Compile Include="Skel_Data\Convert_2D23D.cs" />
     <Compile Include="Skel_Data\LAM.cs" />
     <Compile Include="Skel_Data\Vectorize.cs" />

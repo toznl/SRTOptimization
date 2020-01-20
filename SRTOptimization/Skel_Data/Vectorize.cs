@@ -68,7 +68,6 @@ namespace SRTOptimization.Skel_Data
                 { Math.Atan2(r_Right,elbow_Right_c[0,0]-shoulder_Right_c[0,0])*180/Math.PI+Math.PI/2}
             });
         }
-
         public Matrix<double> Arm_Transform_Below(Matrix<double> mat_Skel) //Arm Angle 양옆 위아래
         {
             Matrix<double> result;
@@ -130,28 +129,6 @@ namespace SRTOptimization.Skel_Data
                 { Math.Atan2(r_Left,wrist_Left_c[0,0]-elbow_Left_c[0,0])*180/Math.PI+Math.PI/2},
                 { Math.Atan2(r_Right,wrist_Right_c[0,0]-elbow_Right_c[0,0])*180/Math.PI+Math.PI/2}
             });
-
-            
-        }
-
-        
-
-        public double VectorSize(Matrix<double> Vector)
-        {
-            double VectorSize;
-
-            VectorSize = Math.Sqrt((Vector[0, 0] * Vector[0, 0]) + (Vector[1, 0] * Vector[1, 0]) + (Vector[2, 0] * Vector[2, 0]));
-
-            return VectorSize;
-        }
-
-        public double VectorSize2D(Matrix<double> Vector)
-        {
-            double VectorSize;
-
-            VectorSize = Math.Sqrt((Vector[0, 0] * Vector[0, 0]) + (Vector[1, 0] * Vector[1, 0]));
-
-            return VectorSize;
         }
     }
 }

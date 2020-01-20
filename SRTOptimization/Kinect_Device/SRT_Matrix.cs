@@ -13,7 +13,6 @@ using Microsoft.Kinect;
 
 namespace SRTOptimization.Kinect_Device
 {
-
     public class Kinect_Point
     {
         public DepthSpacePoint head;
@@ -28,8 +27,6 @@ namespace SRTOptimization.Kinect_Device
         public DepthSpacePoint thumb_Right;
         public DepthSpacePoint spine_Mid;
         public DepthSpacePoint spine_Base;
-        
-
         public Matrix<double> body_X;
         public Matrix<double> body_Y;
         public Matrix<double> body_Z;
@@ -73,7 +70,6 @@ namespace SRTOptimization.Kinect_Device
         }
 
     }
-
     public class Kinect_Mat_Y : Kinect_Point
     {
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
@@ -103,7 +99,6 @@ namespace SRTOptimization.Kinect_Device
         }
 
     }
-
     public class Kinect_Mat_Z : Kinect_Point
     {
         public Matrix<double> Get_Bodies(Body body, KinectSensor sensor)
@@ -121,8 +116,6 @@ namespace SRTOptimization.Kinect_Device
             thumb_Right = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.ThumbRight].Position);
             spine_Mid = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineMid].Position);
             spine_Base = sensor.CoordinateMapper.MapCameraPointToDepthSpace(joints[JointType.SpineBase].Position);
-            
-            
 
             body_Z = DenseMatrix.OfArray(new double[,]
             {
