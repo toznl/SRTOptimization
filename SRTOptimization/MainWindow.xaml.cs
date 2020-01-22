@@ -218,7 +218,9 @@ namespace SRTOptimization
 
                                     mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
                                     mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
-                                    //mat_Z_01 *= 10000;
+                                    mat_X_01 *= 100;
+                                    mat_Y_01 *= 100;
+                                    mat_Z_01 *= 100;
 
                                     skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
                                         {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
@@ -520,9 +522,12 @@ namespace SRTOptimization
 
                                     # region All Angles Save as file line by line
                                     outputFile = new StreamWriter(@"..\data.txt", true);
+                                    outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
+
                                     if (time_stamp_kinect == 0)
                                     {
                                         outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
+                                        outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
                                         string timeStart = timer.ToString("hh:mm:ss fff");
                                         time_stamp_kinect += 1;
                                     }
@@ -530,23 +535,9 @@ namespace SRTOptimization
                                     {
                                         string timeStamp = timer.ToString("hh:mm:ss fff");
                                         outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
+                                        outputFile_XYZ.WriteLine(timeStamp + "	" + "{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1, 0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
                                     }
                                     outputFile.Close();
-                                    #endregion
-                                    #region X,Y,Z FileMaker
-                                    outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
-                                    if (time_stamp_kinect == 0)
-                                    {
-                                        outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
-                                        string timeStart = timer.ToString("hh:mm:ss fff");
-                                        time_stamp_kinect += 1;
-                                    }
-
-                                    else
-                                    {
-                                        string timeStamp = timer.ToString("hh:mm:ss fff");
-                                        outputFile_XYZ.WriteLine(timeStamp+ "	"+"{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1,0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
-                                    }
                                     outputFile_XYZ.Close();
                                     #endregion
                                 }
