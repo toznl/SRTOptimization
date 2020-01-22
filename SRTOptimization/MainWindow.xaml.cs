@@ -218,7 +218,7 @@ namespace SRTOptimization
 
                                     mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
                                     mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
-                                    mat_Z_01 *= 10000;
+                                    //mat_Z_01 *= 10000;
 
                                     skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
                                         {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
