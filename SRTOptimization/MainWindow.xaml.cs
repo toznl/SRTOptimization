@@ -297,7 +297,7 @@ namespace SRTOptimization
                                     //    {
                                     //        Angle_Set_ElbowSpin[i + 2, 0] = 90;
                                     //    }
-                                    //}
+                                    //} 
 
                                     Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmUpper[2, 0];
@@ -574,7 +574,7 @@ namespace SRTOptimization
             string[] stringArray = new string[1492];
             byte[] buff;
             int data_len;
-
+        
             buff = Encoding.ASCII.GetBytes(data);
             data_len = data.Length;
 
