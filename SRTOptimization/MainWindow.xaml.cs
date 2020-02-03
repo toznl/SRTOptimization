@@ -242,62 +242,53 @@ namespace SRTOptimization
                                     Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
                                     Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
 
-                                    //for (int i = 0; i < 2; i++)
-                                    //{
-                                    //    Angle_Set_ArmSide[i,0]=(double)((int)(Angle_Set_ArmSide[i, 0]*0.8) / 5)*5;
-                                    //    if (Angle_Set_ArmSide[i, 0] < 0)
-                                    //    {
-                                    //        Angle_Set_ArmSide[i, 0] = 0;
-                                    //    }
+                                    for (int i = 0; i < 2; i++)
+                                    {
+                                        Angle_Set_ArmUpper[i, 0] = (double)((int)(Angle_Set_ArmUpper[i, 0]) / 5) * 5;
+                                        if (Angle_Set_ArmUpper[i , 0] < 0)
+                                        {
+                                            Angle_Set_ArmUpper[i , 0] = 0;
+                                        }
 
-                                    //    if (Angle_Set_ArmSide[i, 0] > 90)
-                                    //    {
-                                    //        Angle_Set_ArmSide[i, 0] = 90;
-                                    //    }
+                                        if (Angle_Set_ArmUpper[i , 0] > 90)
+                                        {
+                                            Angle_Set_ArmUpper[i , 0] = 90;
+                                        }
 
-                                    //    Angle_Set_ArmFrontal[i, 0] = (double)((int)(Angle_Set_ArmFrontal[i, 0]*0.8) / 5) * 5;
-                                    //    if (Angle_Set_ArmFrontal[i, 0] < 0)
-                                    //    {
-                                    //        Angle_Set_ArmFrontal[i, 0] = 0;
-                                    //    }
+                                        Angle_Set_ArmUpper[i+2, 0] = (double)(95-((int)(Angle_Set_ArmUpper[i+2, 0]) / 5) * 5);
+                                        if (Angle_Set_ArmUpper[i+2, 0] < 0)
+                                        {
+                                            Angle_Set_ArmUpper[i+2, 0] = 0;
+                                        }
 
-                                    //    if (Angle_Set_ArmFrontal[i, 0] > 90)
-                                    //    {
-                                    //        Angle_Set_ArmFrontal[i, 0] = 90;
-                                    //    }
+                                        if (Angle_Set_ArmUpper[i+2, 0] > 90)
+                                        {
+                                            Angle_Set_ArmUpper[i+2, 0] = 90;
+                                        }
+                                        
+                                        Angle_Set_ArmBelow[i, 0] = (double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5;
+                                        
+                                        if (Angle_Set_ArmBelow[i, 0] < -40)
+                                        {
+                                            Angle_Set_ArmBelow[i, 0] = -40;
+                                        }
 
-                                    //    Angle_Set_Elbow[i, 0] = (double)((int)(Angle_Set_Elbow[i, 0]) / 5) * 5;
-                                    //    if (Angle_Set_Elbow[i, 0] < 0)
-                                    //    {
-                                    //        Angle_Set_Elbow[i, 0] = 0;
-                                    //    }
+                                        if (Angle_Set_ArmBelow[i, 0] > 40)
+                                        {
+                                            Angle_Set_ArmBelow[i, 0] = 40;
+                                        }
 
-                                    //    if (Angle_Set_Elbow[i, 0] > 80)
-                                    //    {
-                                    //        Angle_Set_Elbow[i,0] = 80;
-                                    //    }
+                                        //Angle_Set_ArmBelow[i + 2, 0] = (double)((int)(Angle_Set_ArmBelow[i + 2, 0]) / 5) * 5;
+                                        //if (Angle_Set_ArmBelow[i + 2, 0] < 0)
+                                        //{
+                                        //    Angle_Set_ArmBelow[i + 2, 0] = 0;
+                                        //}
 
-                                    //    Angle_Set_ElbowSpin[i, 0] = (double)((int)(Angle_Set_ElbowSpin[i, 0]) / 2) * 2;
-                                    //    if (Angle_Set_ElbowSpin[i, 0] < -30)
-                                    //    {
-                                    //        Angle_Set_ElbowSpin[i, 0] = -30;
-                                    //    }
-
-                                    //    if (Angle_Set_ElbowSpin[i, 0] > 50)
-                                    //    {
-                                    //        Angle_Set_ElbowSpin[i, 0] = 50;
-                                    //    }
-                                    //    Angle_Set_ElbowSpin[i + 2, 0] = (double)((int)(Angle_Set_ElbowSpin[i + 2, 0]) / 5) * 5;
-                                    //    if (Angle_Set_ElbowSpin[i + 2, 0] < -10)
-                                    //    {
-                                    //        Angle_Set_ElbowSpin[i + 2, 0] = -10;
-                                    //    }
-
-                                    //    if (Angle_Set_ElbowSpin[i + 2, 0] > 90)
-                                    //    {
-                                    //        Angle_Set_ElbowSpin[i + 2, 0] = 90;
-                                    //    }
-                                    //} 
+                                        //if (Angle_Set_ArmBelow[i + 2, 0] > 90)
+                                        //{
+                                        //    Angle_Set_ArmBelow[i + 2, 0] = 90;
+                                        //}
+                                    }
 
                                     Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0, 0];
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmUpper[2, 0];
@@ -310,6 +301,7 @@ namespace SRTOptimization
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
 
                                     string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
+
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
@@ -518,28 +510,30 @@ namespace SRTOptimization
                                     }));
 
                                     #endregion
-                                    DateTime timer = DateTime.Now;
 
-                                    # region All Angles Save as file line by line
-                                    outputFile = new StreamWriter(@"..\data.txt", true);
-                                    outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
+                                    //sending(data);
+                                    
+                                    //# region All Angles Save as file line by line
+                                    //DateTime timer = DateTime.Now;
+                                    //outputFile = new StreamWriter(@"..\data.txt", true);
+                                    //outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
 
-                                    if (time_stamp_kinect == 0)
-                                    {
-                                        outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
-                                        outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
-                                        string timeStart = timer.ToString("hh:mm:ss fff");
-                                        time_stamp_kinect += 1;
-                                    }
-                                    else
-                                    {
-                                        string timeStamp = timer.ToString("hh:mm:ss fff");
-                                        outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
-                                        outputFile_XYZ.WriteLine(timeStamp + "	" + "{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1, 0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
-                                    }
-                                    outputFile.Close();
-                                    outputFile_XYZ.Close();
-                                    #endregion
+                                    //if (time_stamp_kinect == 0)
+                                    //{
+                                    //    outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
+                                    //    outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
+                                    //    string timeStart = timer.ToString("hh:mm:ss fff");
+                                    //    time_stamp_kinect += 1;
+                                    //}
+                                    //else
+                                    //{
+                                    //    string timeStamp = timer.ToString("hh:mm:ss fff");
+                                    //    outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
+                                    //    outputFile_XYZ.WriteLine(timeStamp + "	" + "{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1, 0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
+                                    //}
+                                    //outputFile.Close();
+                                    //outputFile_XYZ.Close();
+                                    //#endregion
                                 }
                             }
                             

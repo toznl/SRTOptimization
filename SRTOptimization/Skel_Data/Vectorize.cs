@@ -65,7 +65,6 @@ namespace SRTOptimization.Skel_Data
             shoulder_Left_c[0, 0] = -shoulder_Left_c[0, 0];
             elbow_Left_c[0, 0] = -elbow_Left_c[0, 0];
 
-
             double r_Left = Math.Sqrt((elbow_Left_c[2,0]*elbow_Left_c[2,0])+ (elbow_Left_c[1, 0] * elbow_Left_c[1, 0]));
             double r_Right = Math.Sqrt((elbow_Right_c[2, 0] * elbow_Right_c[2, 0]) + (elbow_Right_c[1, 0] * elbow_Right_c[1, 0]));
 
@@ -80,12 +79,6 @@ namespace SRTOptimization.Skel_Data
         public Matrix<double> Arm_Transform_Below(Matrix<double> mat_Skel) //Arm Angle 양옆 위아래
         {
             Matrix<double> result;
-
-            Matrix<double> shoulder_Mid = DenseMatrix.OfArray(new double[,]{
-                {mat_Skel[1,0] },
-                {mat_Skel[1,1] },
-                {mat_Skel[1,2] }
-            });
 
             Matrix<double> shoulder_Left = DenseMatrix.OfArray(new double[,]
             {
@@ -130,11 +123,9 @@ namespace SRTOptimization.Skel_Data
             });
 
             Matrix<double> elbow_Left_c = elbow_Left - shoulder_Left;
-            Matrix<double> shoulder_Mid_Left_c = shoulder_Mid - shoulder_Left;
             Matrix<double> wrist_Left_c = wrist_Left - shoulder_Left;
 
             Matrix<double> elbow_Right_c = elbow_Right - shoulder_Right;
-            Matrix<double> shoulder_Mid_Right_c = shoulder_Mid - shoulder_Right;
             Matrix<double> wrist_Right_c = wrist_Right - shoulder_Right;
 
             Matrix<double> vec_Y = DenseMatrix.OfArray(new double[,] {
