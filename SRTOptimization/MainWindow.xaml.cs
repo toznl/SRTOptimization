@@ -62,6 +62,8 @@ namespace SRTOptimization
         public double angle16 = 0;
         public double angle17 = 0;
 
+        public string data;
+
         public StreamWriter outputFile;
         public StreamWriter outputFile_XYZ;
         public int time_stamp_kinect = 0;
@@ -93,6 +95,22 @@ namespace SRTOptimization
             {
                 Environment.Exit(1);
             };
+
+            //Thread send_Thread = new Thread(new ParameterizedThreadStart(sending));
+
+            //if (data != null)
+            //{
+            //    try
+            //    {
+            //        send_Thread.Start(data);
+            //    }
+
+            //    catch(Exception e)
+            //    {
+            //        Console.WriteLine(e.ToString());
+            //    }
+                
+            //}
         }
 
         #region Kinect V2
@@ -245,29 +263,29 @@ namespace SRTOptimization
                                     for (int i = 0; i < 2; i++)
                                     {
                                         Angle_Set_ArmUpper[i, 0] = (double)((int)(Angle_Set_ArmUpper[i, 0]) / 5) * 5;
-                                        if (Angle_Set_ArmUpper[i , 0] < 0)
+                                        if (Angle_Set_ArmUpper[i, 0] < 0)
                                         {
-                                            Angle_Set_ArmUpper[i , 0] = 0;
+                                            Angle_Set_ArmUpper[i, 0] = 0;
                                         }
 
-                                        if (Angle_Set_ArmUpper[i , 0] > 90)
+                                        if (Angle_Set_ArmUpper[i, 0] > 90)
                                         {
-                                            Angle_Set_ArmUpper[i , 0] = 90;
+                                            Angle_Set_ArmUpper[i, 0] = 90;
                                         }
 
-                                        Angle_Set_ArmUpper[i+2, 0] = (double)(95-((int)(Angle_Set_ArmUpper[i+2, 0]) / 5) * 5);
-                                        if (Angle_Set_ArmUpper[i+2, 0] < 0)
+                                        Angle_Set_ArmUpper[i + 2, 0] = (double)(95 - ((int)(Angle_Set_ArmUpper[i + 2, 0]) / 5) * 5);
+                                        if (Angle_Set_ArmUpper[i + 2, 0] < 0)
                                         {
-                                            Angle_Set_ArmUpper[i+2, 0] = 0;
+                                            Angle_Set_ArmUpper[i + 2, 0] = 0;
                                         }
 
-                                        if (Angle_Set_ArmUpper[i+2, 0] > 90)
+                                        if (Angle_Set_ArmUpper[i + 2, 0] > 90)
                                         {
-                                            Angle_Set_ArmUpper[i+2, 0] = 90;
+                                            Angle_Set_ArmUpper[i + 2, 0] = 90;
                                         }
-                                        
-                                        Angle_Set_ArmBelow[i, 0] = (double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5;
-                                        
+
+                                        Angle_Set_ArmBelow[i, 0] = 90-((double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5);
+
                                         if (Angle_Set_ArmBelow[i, 0] < -40)
                                         {
                                             Angle_Set_ArmBelow[i, 0] = -40;
@@ -278,16 +296,16 @@ namespace SRTOptimization
                                             Angle_Set_ArmBelow[i, 0] = 40;
                                         }
 
-                                        //Angle_Set_ArmBelow[i + 2, 0] = (double)((int)(Angle_Set_ArmBelow[i + 2, 0]) / 5) * 5;
-                                        //if (Angle_Set_ArmBelow[i + 2, 0] < 0)
-                                        //{
-                                        //    Angle_Set_ArmBelow[i + 2, 0] = 0;
-                                        //}
+                                        Angle_Set_ArmBelow[i + 2, 0] = (double)((int)(Angle_Set_ArmBelow[i + 2, 0]) / 5) * 5;
+                                        if (Angle_Set_ArmBelow[i + 2, 0] < 0)
+                                        {
+                                            Angle_Set_ArmBelow[i + 2, 0] = 0;
+                                        }
 
-                                        //if (Angle_Set_ArmBelow[i + 2, 0] > 90)
-                                        //{
-                                        //    Angle_Set_ArmBelow[i + 2, 0] = 90;
-                                        //}
+                                        if (Angle_Set_ArmBelow[i + 2, 0] > 90)
+                                        {
+                                            Angle_Set_ArmBelow[i + 2, 0] = 90;
+                                        }
                                     }
 
                                     Angle_Set_Arm[0, 0] = Angle_Set_ArmUpper[0, 0];
@@ -300,7 +318,7 @@ namespace SRTOptimization
                                     Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
 
-                                    string data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
+                                    data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
@@ -417,22 +435,6 @@ namespace SRTOptimization
 
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
                                     {
-                                        Ellipse drawThumbLeft = new Ellipse
-                                        {
-                                            Fill = Brushes.Red,
-                                            Width = 10,
-                                            Height = 10
-                                        };
-
-                                        Canvas.SetLeft(drawThumbLeft, mat_X_01[1, 3] - drawThumbLeft.Width / 2);
-                                        Canvas.SetTop(drawThumbLeft, mat_Y_01[1, 3] - drawThumbLeft.Width / 2);
-                                        canvas.Children.Add(drawThumbLeft);
-                                        textCanvas.Text += "ThumbLeft : (" + mat_X_01[1, 3].ToString("F3") + "  ,  " + mat_Y_01[1, 3].ToString("F3") + "  ,  " + mat_Z_01[1, 3].ToString("F3") + ")\n";
-
-                                    }));
-
-                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                    {
                                         Ellipse drawShoulderRight = new Ellipse
                                         {
                                             Fill = Brushes.LimeGreen,
@@ -476,22 +478,6 @@ namespace SRTOptimization
                                         Canvas.SetTop(drawWristRight, mat_Y_01[2, 2] - drawWristRight.Width / 2);
                                         canvas.Children.Add(drawWristRight);
                                         textCanvas.Text += "WristRight : (" + mat_X_01[2, 2].ToString("F3") + "  ,  " + mat_Y_01[2, 2].ToString("F3") + "  ,  " + mat_Z_01[2, 2].ToString("F3") + ")\n";
-
-                                    }));
-
-                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                    {
-                                        Ellipse drawThumbRight = new Ellipse
-                                        {
-                                            Fill = Brushes.Red,
-                                            Width = 10,
-                                            Height = 10
-                                        };
-
-                                        Canvas.SetLeft(drawThumbRight, mat_X_01[2, 3] - drawThumbRight.Width / 2);
-                                        Canvas.SetTop(drawThumbRight, mat_Y_01[2, 3] - drawThumbRight.Width / 2);
-                                        canvas.Children.Add(drawThumbRight);
-                                        textCanvas.Text += "ThumbRight : (" + mat_X_01[2, 3].ToString("F3") + "  ,  " + mat_Y_01[2, 3].ToString("F3") + "  ,  " + mat_Z_01[2, 3].ToString("F3") + ")\n";
                                         textCanvas.Text += "\n";
                                         textCanvas.Text += "----------------------Angle----------------------\n";
                                         textCanvas.Text += "[Left]\n";
@@ -505,14 +491,12 @@ namespace SRTOptimization
                                         textCanvas.Text += "Side       : " + Angle_Set_Arm[6, 0] + "\n";
                                         textCanvas.Text += "ElbowSpin      : " + Angle_Set_Arm[7, 0] + "\n";
                                         textCanvas.Text += "Elbow : " + Angle_Set_Arm[8, 0] + "\n";
-
-
                                     }));
 
                                     #endregion
 
                                     //sending(data);
-                                    
+
                                     //# region All Angles Save as file line by line
                                     //DateTime timer = DateTime.Now;
                                     //outputFile = new StreamWriter(@"..\data.txt", true);
@@ -556,7 +540,7 @@ namespace SRTOptimization
                 }
             }
         }
-        public void sending(string data)
+        public static void sending(string data)
         {
             TcpClient tc = new TcpClient("192.168.0.200", 5001);
             NetworkStream stream = tc.GetStream();
