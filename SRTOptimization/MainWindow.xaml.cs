@@ -1,31 +1,16 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using Microsoft.Kinect;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.Windows.Threading;
-
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
-
-using System.Net;
-using System.Net.Sockets;
-
-
-using Microsoft.Kinect;
-
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
+using System.Windows.Threading;
 
 
 namespace SRTOptimization
@@ -38,13 +23,15 @@ namespace SRTOptimization
     public partial class MainWindow : Window
     {
         #region Variables
-        //Kinect Variables
+        //Kinect Skeleton
         KinectSensor sensor;
         DepthFrameReader depthReader;
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
-        //Angle Variables
+        public double[,] byte2go; 
+
+        //angleInit
         public double angle01 = 0;
         public double angle02 = 0;
         public double angle03 = 0;
@@ -62,25 +49,15 @@ namespace SRTOptimization
         public double angle15 = 0;
         public double angle16 = 0;
         public double angle17 = 0;
-        public string data;
 
-        //Function Call
+        //Sending Data
+        public string data;
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
-        #endregion
-        #region Kinect_Matrix
 
         Matrix<double> mat_X_01;
         Matrix<double> mat_Y_01;
         Matrix<double> mat_Z_01;
-
-        //Matrix<double> mat_X_02;
-        //Matrix<double> mat_Y_02;
-        //Matrix<double> mat_Z_02;
-
         Matrix<double> skel_Mat_01;
-        //Matrix<double> skel_Mat_02;
-        //byte[] skel_Mat_02_byte;
-
         #endregion
 
         public MainWindow()
@@ -153,8 +130,7 @@ namespace SRTOptimization
         void OnBodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             var frame = e.FrameReference.AcquireFrame();
-
-            #region AngleMatrix
+            #region AngleSet Upper&Below
             Matrix<double> Angle_Set_ArmUpper = DenseMatrix.OfArray(new double[,]{
                 {angle05 },
                 {angle06 },
@@ -189,7 +165,6 @@ namespace SRTOptimization
                 bodies = new Body[frame.BodyFrameSource.BodyCount];
                 frame.GetAndRefreshBodyData(bodies);
                 ulong TrackedOnly = 0;
-
                 foreach (var body in bodies)
                 {
                     if (bodies != null) 
@@ -198,22 +173,18 @@ namespace SRTOptimization
                         {
                             try
                             {
-                                #region OnePerson Attach_Kinect
                                 if (TrackedOnly == 0)
                                 {
                                     TrackedOnly = body.TrackingId;
                                 }
-                                #endregion
 
                                 if (body.TrackingId == TrackedOnly)
                                 {
-                                    #region Kinect Matrix Initiate
-                                    //Kinect Matrix Init
+                                    #region Skeleton Matrix Initiate
                                     Kinect_Device.Kinect_Mat_X _Mat_X_01 = new Kinect_Device.Kinect_Mat_X();
                                     Kinect_Device.Kinect_Mat_Y _Mat_Y_01 = new Kinect_Device.Kinect_Mat_Y();
                                     Kinect_Device.Kinect_Mat_Z _Mat_Z_01 = new Kinect_Device.Kinect_Mat_Z();
 
-                                    //Put BodySkeletons to Matrix
                                     _Mat_X_01.Get_Bodies(body, sensor);
                                     _Mat_Y_01.Get_Bodies(body, sensor);
                                     _Mat_Z_01.Get_Bodies(body, sensor);
@@ -222,14 +193,12 @@ namespace SRTOptimization
                                     mat_Y_01 = _Mat_Y_01.body_Y;
                                     mat_Z_01 = _Mat_Z_01.body_Z;
 
-                                    //Convert X,Y Coordinations to real meters
                                     mat_X_01 = con3d.ConvertX(mat_X_01, mat_Z_01);
                                     mat_Y_01 = con3d.ConvertY(mat_Y_01, mat_Z_01);
                                     mat_X_01 *= 100;
                                     mat_Y_01 *= 100;
                                     mat_Z_01 *= 100;
 
-                                    //Put Values to Skeleton Matrix
                                     skel_Mat_01 = DenseMatrix.OfArray(new double[,]{
                                         {mat_X_01[0,0], mat_Y_01[0,0], mat_Z_01[0,0] }, //Head          0
                                         {mat_X_01[0,1], mat_Y_01[0,1], mat_Z_01[0,1] }, //Shoulder_Mid  1
@@ -240,18 +209,17 @@ namespace SRTOptimization
                                         {mat_X_01[1,2], mat_Y_01[1,2], mat_Z_01[1,2] }, //Wrist_Left    6
                                         {mat_X_01[1,3], mat_Y_01[1,3], mat_Z_01[1,3] }, //Thumb_Left    7
                                         {mat_X_01[2,0], mat_Y_01[2,0], mat_Z_01[2,0] }, //Shoulder_Right8
-                                        {mat_X_01[2,1], mat_Y_01[2,1], mat_Z_01[2,1] }, //Elbow_Right   9
+                                        {mat_X_01[2,1], mat_Y_01[2,1], mat_Z_01[2,1] }, //Elbow_Righ    t   9
                                         {mat_X_01[2,2], mat_Y_01[2,2], mat_Z_01[2,2] }, //Wrist_Right   10
                                         {mat_X_01[2,3], mat_Y_01[2,3], mat_Z_01[2,3] }, //Thumb_Right   11
                                          });
-                                    #endregion
 
-                                    //Function Call
                                     Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
+
                                     Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
                                     Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
-                                    
-                                    #region Put data to Matrix
+                                    #endregion
+                                    #region Angle Limits and Put angle values to matrix
                                     for (int i = 0; i < 2; i++)
                                     {
                                         Angle_Set_ArmUpper[i, 0] = (double)((int)(Angle_Set_ArmUpper[i, 0]) / 5) * 5;
@@ -276,7 +244,7 @@ namespace SRTOptimization
                                             Angle_Set_ArmUpper[i + 2, 0] = 90;
                                         }
 
-                                        Angle_Set_ArmBelow[i, 0] = 100-((double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5);
+                                        Angle_Set_ArmBelow[i, 0] = 90-((double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5);
 
                                         if (Angle_Set_ArmBelow[i, 0] < -40)
                                         {
@@ -289,7 +257,6 @@ namespace SRTOptimization
                                         }
 
                                         Angle_Set_ArmBelow[i + 2, 0] = (double)((int)(Angle_Set_ArmBelow[i + 2, 0]) / 5) * 5;
-
                                         if (Angle_Set_ArmBelow[i + 2, 0] < 0)
                                         {
                                             Angle_Set_ArmBelow[i + 2, 0] = 0;
@@ -311,8 +278,7 @@ namespace SRTOptimization
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
                                     #endregion
 
-                                    //Send AngleData to Robot
-                                    data = Angle_Set_Arm[0, 0]+","+Angle_Set_Arm[1, 0] + "," + Angle_Set_Arm[2, 0] + "," + Angle_Set_Arm[3, 0] + "," +Angle_Set_Arm[5, 0] + "," + Angle_Set_Arm[6, 0] + "," + Angle_Set_Arm[7, 0] + "," + Angle_Set_Arm[8, 0];
+                                    data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
                                     sending(data);
 
                                     #region DrawSkeleton_01
@@ -329,7 +295,6 @@ namespace SRTOptimization
                                         Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
                                         Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
                                         canvas.Children.Add(drawHead);
-                                        
                                         textCanvas.Text = "[Monitor Coordinates] \nHead : (" + mat_X_01[0, 0].ToString("F3") + "  ,  " + mat_Y_01[0, 0].ToString("F3") + "  ,  " + mat_Z_01[0, 0].ToString("F3") + ")\n";
 
                                     }));
@@ -379,10 +344,10 @@ namespace SRTOptimization
                                         Canvas.SetTop(drawSpineBase, mat_Y_01[0, 3] - drawSpineBase.Width / 2);
                                         canvas.Children.Add(drawSpineBase);
                                         textCanvas.Text += "SpineBase : (" + mat_X_01[0, 3].ToString("F3") + "  ,  " + mat_Y_01[0, 3].ToString("F3") + "  ,  " + mat_Z_01[0, 3].ToString("F3") + ")\n";
-                                    }));
+                                    }));    
 
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
-                                    {
+                                    {   
                                         Ellipse drawShoulderLeft = new Ellipse
                                         {
                                             Fill = Brushes.LimeGreen,
@@ -429,7 +394,7 @@ namespace SRTOptimization
 
                                     }));
 
-                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate    
                                     {
                                         Ellipse drawShoulderRight = new Ellipse
                                         {
@@ -491,6 +456,7 @@ namespace SRTOptimization
 
                                     #endregion
 
+                                    
                                 }
                             }
                             
@@ -513,7 +479,7 @@ namespace SRTOptimization
                 }
             }
         }
-        public void sending(string data)
+        public static void sending(string data)
         {
             TcpClient tc = new TcpClient("192.168.0.200", 5001);
             NetworkStream stream = tc.GetStream();
