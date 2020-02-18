@@ -168,7 +168,7 @@ namespace SRTOptimization
                 foreach (var body in bodies)
                 {
                     if (bodies != null) 
-                    {
+                    {   
                         if (body.IsTracked)
                         {
                             try
@@ -277,10 +277,8 @@ namespace SRTOptimization
                                     Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
                                     #endregion
-
                                     data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
                                     sending(data);
-
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
@@ -455,8 +453,6 @@ namespace SRTOptimization
                                     }));
 
                                     #endregion
-
-                                    
                                 }
                             }
                             
