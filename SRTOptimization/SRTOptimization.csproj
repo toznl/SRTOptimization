@@ -112,10 +112,6 @@
     </ApplicationDefinition>
     <Compile Include="Skel_Data\Convert_2D23D.cs" />
     <Compile Include="Skel_Data\Vectorize.cs" />
-    <Compile Include="Streaming\Recv_Points.cs" />
-    <Compile Include="Streaming\SendAngles.cs" />
-    <Compile Include="Streaming\Send_Points.cs" />
-    <Compile Include="Streaming\SerialFunc.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

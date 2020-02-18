@@ -201,7 +201,6 @@ namespace SRTOptimization.Skel_Data
 
             }); 
         }
-
         public double VectorSize(Matrix<double> Vector)
         {
             double Vectorsize;

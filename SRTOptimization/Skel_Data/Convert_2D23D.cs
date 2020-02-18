@@ -11,6 +11,7 @@ namespace SRTOptimization.Skel_Data
 {
     public class Convert_2D23D
     {
+        //Focal Parameters of Kinect Device
         static readonly double fx = 366.435;
         static readonly double fy = 366.435;
         static readonly double cx = 259.478;
@@ -20,6 +21,7 @@ namespace SRTOptimization.Skel_Data
         {
 
         }
+        //Convert X,Y Coordinations based on Z real meters
         public Matrix<double> ConvertX(Matrix<double> mat_X, Matrix<double> mat_Z)
         {
             Matrix<double> result;
