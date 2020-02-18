@@ -37,13 +37,14 @@ namespace SRTOptimization
 
     public partial class MainWindow : Window
     {
+
+        //Kinect Variables
         KinectSensor sensor;
         DepthFrameReader depthReader;
         BodyFrameReader bodyReader;
         IList<Body> bodies;
 
-        public double[,] byte2go;
-
+        //Angle Variables
         public double angle01 = 0;
         public double angle02 = 0;
         public double angle03 = 0;
@@ -61,15 +62,10 @@ namespace SRTOptimization
         public double angle15 = 0;
         public double angle16 = 0;
         public double angle17 = 0;
-
         public string data;
 
-        public StreamWriter outputFile;
-        public StreamWriter outputFile_XYZ;
-        public int time_stamp_kinect = 0;
-
+        //Function Call
         Skel_Data.Convert_2D23D con3d = new Skel_Data.Convert_2D23D();
-        Streaming.SendAngles sendBuf = new Streaming.SendAngles();
 
         #region Kinect_Matrix
 
@@ -96,21 +92,7 @@ namespace SRTOptimization
                 Environment.Exit(1);
             };
 
-            //Thread send_Thread = new Thread(new ParameterizedThreadStart(sending));
-
-            //if (data != null)
-            //{
-            //    try
-            //    {
-            //        send_Thread.Start(data);
-            //    }
-
-            //    catch(Exception e)
-            //    {
-            //        Console.WriteLine(e.ToString());
-            //    }
-                
-            //}
+            //new Thread(new ThreadStart(sending));
         }
 
         #region Kinect V2
@@ -254,12 +236,13 @@ namespace SRTOptimization
                                         {mat_X_01[2,2], mat_Y_01[2,2], mat_Z_01[2,2] }, //Wrist_Right   10
                                         {mat_X_01[2,3], mat_Y_01[2,3], mat_Z_01[2,3] }, //Thumb_Right   11
                                          });
-
+                                    
+                                    //Function Call
                                     Skel_Data.Vectorize vector_Func = new Skel_Data.Vectorize();
-
                                     Angle_Set_ArmUpper = vector_Func.Arm_Transform_Upper(skel_Mat_01);
                                     Angle_Set_ArmBelow = vector_Func.Arm_Transform_Below(skel_Mat_01);
-
+                                    
+                                    #region Put data to Matrix
                                     for (int i = 0; i < 2; i++)
                                     {
                                         Angle_Set_ArmUpper[i, 0] = (double)((int)(Angle_Set_ArmUpper[i, 0]) / 5) * 5;
@@ -284,7 +267,7 @@ namespace SRTOptimization
                                             Angle_Set_ArmUpper[i + 2, 0] = 90;
                                         }
 
-                                        Angle_Set_ArmBelow[i, 0] = 90-((double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5);
+                                        Angle_Set_ArmBelow[i, 0] = 100-((double)((int)(Angle_Set_ArmBelow[i, 0]) / 5) * 5);
 
                                         if (Angle_Set_ArmBelow[i, 0] < -40)
                                         {
@@ -297,6 +280,7 @@ namespace SRTOptimization
                                         }
 
                                         Angle_Set_ArmBelow[i + 2, 0] = (double)((int)(Angle_Set_ArmBelow[i + 2, 0]) / 5) * 5;
+
                                         if (Angle_Set_ArmBelow[i + 2, 0] < 0)
                                         {
                                             Angle_Set_ArmBelow[i + 2, 0] = 0;
@@ -312,13 +296,16 @@ namespace SRTOptimization
                                     Angle_Set_Arm[1, 0] = Angle_Set_ArmUpper[2, 0];
                                     Angle_Set_Arm[2, 0] = Angle_Set_ArmBelow[0, 0];
                                     Angle_Set_Arm[3, 0] = Angle_Set_ArmBelow[2, 0];
-
                                     Angle_Set_Arm[5, 0] = Angle_Set_ArmUpper[1, 0];
                                     Angle_Set_Arm[6, 0] = Angle_Set_ArmUpper[3, 0];
                                     Angle_Set_Arm[7, 0] = Angle_Set_ArmBelow[1, 0];
                                     Angle_Set_Arm[8, 0] = Angle_Set_ArmBelow[3, 0];
+                                    #endregion
 
-                                    data = Angle_Set_Arm[0, 0] + "	" + Angle_Set_Arm[1, 0] + "	" + Angle_Set_Arm[2, 0] + "	" + Angle_Set_Arm[3, 0] + "	" + Angle_Set_Arm[5, 0] + "	" + Angle_Set_Arm[6, 0] + "	" + Angle_Set_Arm[7, 0] + "	" + Angle_Set_Arm[8, 0];
+                                    data = Angle_Set_Arm[0, 0]+","+Angle_Set_Arm[1, 0] + "," + Angle_Set_Arm[2, 0] + "," + Angle_Set_Arm[3, 0] + "," +Angle_Set_Arm[5, 0] + "," + Angle_Set_Arm[6, 0] + "," + Angle_Set_Arm[7, 0] + "," + Angle_Set_Arm[8, 0];
+
+
+                                    sending(data);
 
                                     #region DrawSkeleton_01
                                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { canvas.Children.Clear(); }));
@@ -334,6 +321,7 @@ namespace SRTOptimization
                                         Canvas.SetLeft(drawHead, mat_X_01[0, 0] - drawHead.Width / 2);
                                         Canvas.SetTop(drawHead, mat_Y_01[0, 0] - drawHead.Width / 2);
                                         canvas.Children.Add(drawHead);
+                                        
                                         textCanvas.Text = "[Monitor Coordinates] \nHead : (" + mat_X_01[0, 0].ToString("F3") + "  ,  " + mat_Y_01[0, 0].ToString("F3") + "  ,  " + mat_Z_01[0, 0].ToString("F3") + ")\n";
 
                                     }));
@@ -495,29 +483,6 @@ namespace SRTOptimization
 
                                     #endregion
 
-                                    //sending(data);
-
-                                    //# region All Angles Save as file line by line
-                                    //DateTime timer = DateTime.Now;
-                                    //outputFile = new StreamWriter(@"..\data.txt", true);
-                                    //outputFile_XYZ = new StreamWriter(@"..\xyz_data.txt", true);
-
-                                    //if (time_stamp_kinect == 0)
-                                    //{
-                                    //    outputFile.WriteLine("-1	30	5	6	7	8	11	12	13	14");
-                                    //    outputFile.WriteLine("T	shoulder_mid_x	shoulder_mid_y	shoulder_mid_z	shoulder_left_x	shoulder_left_y	shoulder_left_z	elbow_left_x	elbow_left_y	elbow_left_z	shoulder_right_x	shoulder_right_y	shoulder_right_z	elbow_right_x	elbow_right_y	elbow_right_z");
-                                    //    string timeStart = timer.ToString("hh:mm:ss fff");
-                                    //    time_stamp_kinect += 1;
-                                    //}
-                                    //else
-                                    //{
-                                    //    string timeStamp = timer.ToString("hh:mm:ss fff");
-                                    //    outputFile.WriteLine(timeStamp + "	" + 0 + "	" + data);
-                                    //    outputFile_XYZ.WriteLine(timeStamp + "	" + "{0}" + "	" + "{1}" + "	" + "{2}" + "	" + "{3}" + "	" + "{4}" + "	" + "{5}" + "	" + "{6}" + "	" + "{7}" + "	" + "{8}" + "	" + "{9}" + "	" + "{10}" + "	" + "{11}" + "	" + "{12}" + "	" + "{13}", skel_Mat_01[1, 0], skel_Mat_01[1, 1], skel_Mat_01[1, 2], skel_Mat_01[4, 0], skel_Mat_01[4, 1], skel_Mat_01[4, 2], skel_Mat_01[4, 0], skel_Mat_01[5, 0], skel_Mat_01[5, 1], skel_Mat_01[5, 2], skel_Mat_01[8, 0], skel_Mat_01[8, 1], skel_Mat_01[8, 2], skel_Mat_01[9, 0], skel_Mat_01[9, 1], skel_Mat_01[9, 2]);
-                                    //}
-                                    //outputFile.Close();
-                                    //outputFile_XYZ.Close();
-                                    //#endregion
                                 }
                             }
                             
@@ -540,7 +505,7 @@ namespace SRTOptimization
                 }
             }
         }
-        public static void sending(string data)
+        public void sending(string data)
         {
             TcpClient tc = new TcpClient("192.168.0.200", 5001);
             NetworkStream stream = tc.GetStream();

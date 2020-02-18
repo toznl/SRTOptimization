@@ -185,23 +185,30 @@ namespace SRTOptimization.Skel_Data
             wrist_Left_c = Rotation_X_Left * (Rotation_Z_Left * wrist_Left_c);
             wrist_Right_c = Rotation_X_Right *( Rotation_Z_Right * wrist_Right_c);
 
-            Matrix<double> el_to_wr_Left = wrist_Left_c - elbow_Left_c;
-            Matrix<double> el_to_wr_Right = wrist_Right_c - elbow_Right_c;
+            Matrix<double> shoulder_to_elbow_Left = shoulder_Left-elbow_Left;
+            Matrix<double> shoulder_to_elbow_Right =shoulder_Right-elbow_Right;
 
-            double r_Left = Math.Sqrt((wrist_Left_c[2, 0] * wrist_Left_c[2, 0]) + (wrist_Left_c[0, 0] * wrist_Left_c[0, 0]));
-            double r_Right = Math.Sqrt((wrist_Right_c[2, 0] * wrist_Right_c[2, 0]) + (wrist_Right_c[0, 0] * wrist_Right_c[0, 0]));
+            Matrix<double> el_to_wr_Left = wrist_Left - elbow_Left;
+            Matrix<double> el_to_wr_Right = wrist_Right - elbow_Right;
 
             return result = DenseMatrix.OfArray(new double[,]
             {
                 { Math.Atan2(wrist_Left_c[2,0], wrist_Left_c[0,0])*180/Math.PI },
                 { Math.Atan2(wrist_Right_c[2,0], wrist_Right_c[0,0])*180/Math.PI},
-                { (Math.Atan2(r_Left,wrist_Left_c[1,0]-elbow_Left_c[1,0])*180/Math.PI)},
-                { (Math.Atan2(r_Right,wrist_Right_c[1,0]-elbow_Right_c[1,0])*180/Math.PI)}
 
-                //{ Math.Acos(((elbow_Left_c[0,0]*el_to_wr_Left[0,0])+(elbow_Left_c[1,0]*el_to_wr_Left[1,0])+(elbow_Left_c[2,0]*el_to_wr_Left[2,0]))/Math.Sqrt((elbow_Left_c[0,0]*elbow_Left_c[0,0])+(elbow_Left_c[1,0]*elbow_Left_c[1,0])+(elbow_Left_c[2,0]*elbow_Left_c[2,0]))*Math.Sqrt((el_to_wr_Left[0,0]*el_to_wr_Left[0,0])+(el_to_wr_Left[1,0]*el_to_wr_Left[1,0])+(el_to_wr_Left[2,0]*el_to_wr_Left[2,0])))},
-                //{ Math.Acos(((elbow_Left_c[0,0]*el_to_wr_Left[0,0])+(elbow_Left_c[1,0]*el_to_wr_Left[1,0])+(elbow_Left_c[2,0]*el_to_wr_Left[2,0]))/Math.Sqrt((elbow_Left_c[0,0]*elbow_Left_c[0,0])+(elbow_Left_c[1,0]*elbow_Left_c[1,0])+(elbow_Left_c[2,0]*elbow_Left_c[2,0]))*Math.Sqrt((el_to_wr_Left[0,0]*el_to_wr_Left[0,0])+(el_to_wr_Left[1,0]*el_to_wr_Left[1,0])+(el_to_wr_Left[2,0]*el_to_wr_Left[2,0])))}
-                
+                {180-((Math.Acos(((shoulder_to_elbow_Left[0,0]*el_to_wr_Left[0,0])+(shoulder_to_elbow_Left[1,0]*el_to_wr_Left[1,0])+(shoulder_to_elbow_Left[2,0]*el_to_wr_Left[2,0]))/(VectorSize(shoulder_to_elbow_Left)*VectorSize(el_to_wr_Left))))*180/Math.PI)},
+                {180-((Math.Acos(((shoulder_to_elbow_Right[0,0]*el_to_wr_Right[0,0])+(shoulder_to_elbow_Right[1,0]*el_to_wr_Right[1,0])+(shoulder_to_elbow_Right[2,0]*el_to_wr_Right[2,0]))/(VectorSize(shoulder_to_elbow_Right)*VectorSize(el_to_wr_Right))))*180/Math.PI)},
+
             }); 
+        }
+
+        public double VectorSize(Matrix<double> Vector)
+        {
+            double Vectorsize;
+
+            Vectorsize = Math.Sqrt((Vector[0, 0] * Vector[0, 0])+ (Vector[1, 0] * Vector[1, 0])+ (Vector[2, 0] * Vector[2, 0]));
+
+            return Vectorsize;
         }
     }
 }
