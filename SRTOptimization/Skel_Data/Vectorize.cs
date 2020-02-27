@@ -74,7 +74,7 @@ namespace SRTOptimization.Skel_Data
                 { Math.Atan2(r_Right,elbow_Right_c[0,0]-shoulder_Right_c[0,0])*180/Math.PI+Math.PI/2}
             });
         }
-        public Matrix<double> Arm_Transform_Below(Matrix<double> mat_Skel) //Arm Angle 양옆 위아래
+        public Matrix<double> Arm_Transform_Below(Matrix<double> mat_Skel) //Arm Angle 양s옆 위아래
         {
             Matrix<double> result;
             #region Elbow&Shoulder Matrix
@@ -142,7 +142,7 @@ namespace SRTOptimization.Skel_Data
                 {0 },
                 {1 },
                 {0 }
-            });
+            }); 
 
             double Angle_X_Left = Math.Acos((elbow_Left_u[2, 0] * vec_Y[2, 0] + elbow_Left_u[1, 0] * vec_Y[1, 0])/ Math.Sqrt((elbow_Left_u[1, 0] * elbow_Left_u[1, 0]) + (elbow_Left_u[2, 0] * elbow_Left_u[2, 0])) * Math.Sqrt((vec_Y[1, 0] * vec_Y[1, 0]) + (vec_Y[2, 0] * vec_Y[2, 0])));
             double Angle_X_Right = Math.Acos((elbow_Right_u[2, 0] * vec_Y[2, 0] + elbow_Right_u[1, 0] * vec_Y[1, 0])/ Math.Sqrt((elbow_Right_u[1, 0] * elbow_Right_u[1, 0]) + (elbow_Right_u[2, 0] * elbow_Right_u[2, 0])) * Math.Sqrt((vec_Y[1, 0] * vec_Y[1, 0]) + (vec_Y[2, 0] * vec_Y[2, 0])));
@@ -174,9 +174,6 @@ namespace SRTOptimization.Skel_Data
                 {Math.Sin(Angle_Z_Right ),Math.Cos(Angle_Z_Right),0 },
                 {0,0,1 },
             });
-
-            elbow_Left_c = Rotation_X_Left *( Rotation_Z_Left * elbow_Left_c);
-            elbow_Right_c = Rotation_X_Right * (Rotation_Z_Right * elbow_Right_c);
             wrist_Left_c = Rotation_X_Left * (Rotation_Z_Left * wrist_Left_c);
             wrist_Right_c = Rotation_X_Right *( Rotation_Z_Right * wrist_Right_c);
 
@@ -189,7 +186,7 @@ namespace SRTOptimization.Skel_Data
             return result = DenseMatrix.OfArray(new double[,]
             {
                 { Math.Atan2(wrist_Left_c[2,0], wrist_Left_c[0,0])*180/Math.PI },
-                { Math.Atan2(wrist_Right_c[2,0], wrist_Right_c[0,0])*180/Math.PI},
+                { Math.Atan2(wrist_Right_c[2,0], wrist_Right_c[0,0])*180/Math.PI},  
 
                 {180-((Math.Acos(((shoulder_to_elbow_Left[0,0]*el_to_wr_Left[0,0])+(shoulder_to_elbow_Left[1,0]*el_to_wr_Left[1,0])+(shoulder_to_elbow_Left[2,0]*el_to_wr_Left[2,0]))/(VectorSize(shoulder_to_elbow_Left)*VectorSize(el_to_wr_Left))))*180/Math.PI)},
                 {180-((Math.Acos(((shoulder_to_elbow_Right[0,0]*el_to_wr_Right[0,0])+(shoulder_to_elbow_Right[1,0]*el_to_wr_Right[1,0])+(shoulder_to_elbow_Right[2,0]*el_to_wr_Right[2,0]))/(VectorSize(shoulder_to_elbow_Right)*VectorSize(el_to_wr_Right))))*180/Math.PI)},

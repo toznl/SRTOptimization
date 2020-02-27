@@ -173,7 +173,7 @@ namespace SRTOptimization
                         {
                             try
                             {
-                                if (TrackedOnly == 0)
+                                if (TrackedOnly == 0)   
                                 {
                                     TrackedOnly = body.TrackingId;
                                 }
